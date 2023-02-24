@@ -51,7 +51,12 @@ app.use(
         "http://api.localfreshfoods.co.uk",
         "https://kit-pro.fontawesome.com",
       ],
-      "style-src": ["'self'", "'unsafe-inline'", "fonts.googleapis.com"],
+      "style-src": [
+        "'self'",
+        "'unsafe-inline'",
+        "fonts.googleapis.com",
+        "https://cdn.jsdelivr.net",
+      ],
       "frame-src": ["'self'", "js.stripe.com"],
       "font-src": [
         "'self'",

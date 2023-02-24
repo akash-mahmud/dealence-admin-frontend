@@ -29,8 +29,8 @@ jobs:
           cd dealence-admin-frontend
           sudo git pull origin master
           sudo git status
-          touch .env
-          echo "${{ secrets.ENV_FILE }}" > .env
+          sudo touch .env
+          sudo echo "${{ secrets.ENV_FILE }}" > .env
           sudo pnpm install --only=prod
           sudo pnpm run build
           sudo pm2 restart dealence-admin-frontend
