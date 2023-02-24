@@ -1,28 +1,28 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { useParams, useHistory } from 'react-router-dom';
-      import Alert from '@material-ui/lab/Alert';
-      
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { useParams, useHistory } from "react-router-dom";
+import Alert from "@material-ui/lab/Alert";
+
 function UpdateUser() {
-   const AcessToken = localStorage.getItem('use');
+  const AcessToken = localStorage.getItem("use");
   const { id } = useParams();
   const history = useHistory();
   const [users, setUsers] = useState({});
   const [err, seterr] = useState(false);
-  const [success, setsuccess] = useState(false)
-  const [message, setmessage] = useState('');
+  const [success, setsuccess] = useState(false);
+  const [message, setmessage] = useState("");
   const [invest, setInvest] = useState(null);
-    useEffect(() => {
-      const data = localStorage.getItem('use');
-      console.log(JSON.parse(data));
-      if (!data) {
-        history.push('/employee/login');
-      }
-    }, [history]);
+  useEffect(() => {
+    const data = localStorage.getItem("use");
+    console.log(JSON.parse(data));
+    if (!data) {
+      history.push("/employee/login");
+    }
+  }, [history]);
   const getUser = async () => {
-    const { data } = await axios.get(`/ea/users/verified/${id}`, {
+    const { data } = await axios.get(`/api/users/verified/${id}`, {
       headers: {
-        authorization: 'Bearer ' + JSON.parse(AcessToken).token,
+        authorization: "Bearer " + JSON.parse(AcessToken).token,
       },
     });
     const {
@@ -48,27 +48,24 @@ function UpdateUser() {
       country,
     });
   };
-  const [data, setdata] = useState()
+  const [data, setdata] = useState();
   const getAcountCredentialsData = async () => {
-        const acountData = await axios.get(`/ea/user/account/${id}`, {
-          headers: {
-            authorization: 'Bearer ' + JSON.parse(AcessToken).token,
-          },
-        });
+    const acountData = await axios.get(`/api/user/account/${id}`, {
+      headers: {
+        authorization: "Bearer " + JSON.parse(AcessToken).token,
+      },
+    });
 
     console.log(acountData);
     setdata(acountData.data);
-  }
+  };
 
   const getData = async () => {
-    const investData = await axios.get(
-      `/ea/user/investment/list/${id}`,
-      {
-        headers: {
-          authorization: 'Bearer ' + JSON.parse(AcessToken).token,
-        },
+    const investData = await axios.get(`/api/user/investment/list/${id}`, {
+      headers: {
+        authorization: "Bearer " + JSON.parse(AcessToken).token,
       },
-    );
+    });
 
     setInvest(investData.data);
   };
@@ -82,28 +79,28 @@ function UpdateUser() {
   const submitData = async (e) => {
     e.preventDefault();
     const { data } = await axios.post(
-      `/ea/user/update/details/${id}`,
+      `/api/user/update/details/${id}`,
       {
         ...users,
       },
       {
         headers: {
-          authorization: 'Bearer ' + JSON.parse(AcessToken).token,
+          authorization: "Bearer " + JSON.parse(AcessToken).token,
         },
       }
     );
     console.log(data);
     // success;
 
-    if (data === 'success') {
-setsuccess(true);
-setmessage(data);
+    if (data === "success") {
+      setsuccess(true);
+      setmessage(data);
     } else {
-seterr(true);
-setmessage(data);
+      seterr(true);
+      setmessage(data);
     }
   };
-   
+
   return (
     <>
       <div className="container">
@@ -115,7 +112,7 @@ setmessage(data);
                   history.push(`/employee/users/add/transaction/${id}`)
                 }
                 style={{
-                  marginRight: '20px',
+                  marginRight: "20px",
                 }}
                 type="button"
                 className="btn btn-primary ml-3"
@@ -127,7 +124,7 @@ setmessage(data);
                   history.push(`/employee/users/add/payout/direct/${id}`)
                 }
                 style={{
-                  marginRight: '20px',
+                  marginRight: "20px",
                 }}
                 type="button"
                 className="btn btn-primary ml-3"
@@ -139,7 +136,7 @@ setmessage(data);
                   history.push(`/employee/users/wthdraw/balance/${id}`)
                 }
                 style={{
-                  marginRight: '20px',
+                  marginRight: "20px",
                 }}
                 type="button"
                 className="btn btn-primary ml-3"
@@ -151,7 +148,7 @@ setmessage(data);
                   history.push(`/employee/users/wthdraw/payout/${id}`)
                 }
                 style={{
-                  marginRight: '20px',
+                  marginRight: "20px",
                 }}
                 type="button"
                 className="btn btn-primary ml-3"
@@ -163,7 +160,7 @@ setmessage(data);
                   history.push(`/employee/users/decrease/balance/${id}`)
                 }
                 style={{
-                  marginRight: '20px',
+                  marginRight: "20px",
                 }}
                 type="button"
                 className="btn btn-secondary ml-3"
@@ -176,18 +173,18 @@ setmessage(data);
                   history.push(`/employee/users/decrease/payout/${id}`)
                 }
                 style={{
-                  marginRight: '20px',
+                  marginRight: "20px",
                 }}
                 type="button"
                 className="btn btn-info ml-3"
               >
                 Decrease Available Credit
               </button>
-              {invest === '' && (
+              {invest === "" && (
                 <button
                   onClick={() => history.push(`/employee/user/addplan/${id}`)}
                   style={{
-                    marginRight: '20px',
+                    marginRight: "20px",
                   }}
                   type="button"
                   className="btn btn-warning"
@@ -201,7 +198,7 @@ setmessage(data);
                     history.push(`/employee/user/updatePlan/${id}`)
                   }
                   style={{
-                    marginRight: '20px',
+                    marginRight: "20px",
                   }}
                   type="button"
                   className="btn btn-warning mt-3 mb-3"
@@ -210,23 +207,21 @@ setmessage(data);
                 </button>
               )}
 
- <button
-                  onClick={() =>
-                    history.push(`/employee/users/plans/${id}`)
-                  }
-                  style={{
-                    marginRight: '20px',
-                  }}
-                  type="button"
-                  className="btn btn-info"
-                >
-                  All Plans
-                </button>
+              <button
+                onClick={() => history.push(`/employee/users/plans/${id}`)}
+                style={{
+                  marginRight: "20px",
+                }}
+                type="button"
+                className="btn btn-info"
+              >
+                All Plans
+              </button>
 
               <button
                 onClick={() => history.push(`/employee/users`)}
                 style={{
-                  marginRight: '20px',
+                  marginRight: "20px",
                 }}
                 type="button"
                 className="btn btn-danger mt-3 mb-3"
@@ -407,8 +402,8 @@ setmessage(data);
         </div>
         <div className="row">
           <div className="col-md-6 mt-4">
-            {err ? <Alert severity="error">{message}</Alert> : ''}
-            {success ? <Alert severity="success">{message}</Alert> : ''}
+            {err ? <Alert severity="error">{message}</Alert> : ""}
+            {success ? <Alert severity="success">{message}</Alert> : ""}
           </div>
         </div>
       </div>

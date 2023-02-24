@@ -1,23 +1,23 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import {  useHistory } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { useHistory } from "react-router-dom";
 
 function Home() {
   const [users, setUsers] = useState([]);
 
   const history = useHistory();
-      const AcessToken = localStorage.getItem('use');
+  const AcessToken = localStorage.getItem("use");
   useEffect(() => {
-    const data = localStorage.getItem('use');
+    const data = localStorage.getItem("use");
 
     if (!data) {
-      history.push('/employee/login');
-    } 
+      history.push("/employee/login");
+    }
   }, [history]);
   const getUsers = async () => {
-    const { data } = await axios.get('/ea/users', {
+    const { data } = await axios.get("/api/users", {
       headers: {
-        authorization: 'Bearer ' + JSON.parse(AcessToken).token,
+        authorization: "Bearer " + JSON.parse(AcessToken).token,
       },
     });
     setUsers(data);
@@ -29,33 +29,33 @@ function Home() {
   const approve = async (id) => {
     console.log(id);
     const { data } = await axios.post(
-      `/ea/users`,
+      `/api/users`,
       { id: id },
       {
         headers: {
-          authorization: 'Bearer ' + JSON.parse(AcessToken).token,
+          authorization: "Bearer " + JSON.parse(AcessToken).token,
         },
       }
     );
-      getUsers();
+    getUsers();
   };
   const discard = async (id) => {
     console.log(id);
     const { data } = await axios.post(
-      `/ea/users/discard`,
+      `/api/users/discard`,
       { id: id },
       {
         headers: {
-          authorization: 'Bearer ' + JSON.parse(AcessToken).token,
+          authorization: "Bearer " + JSON.parse(AcessToken).token,
         },
       }
     );
   };
 
   const logout = () => {
-  localStorage.removeItem('use')
-  history.push('/employee/login');
-  }
+    localStorage.removeItem("use");
+    history.push("/employee/login");
+  };
   return (
     <>
       <div className="container">
@@ -70,7 +70,7 @@ function Home() {
           <div className="col-md-2 mb-3">
             <button
               className="btn btn-primary mb-2"
-              onClick={() => history.push('/employee/users')}
+              onClick={() => history.push("/employee/users")}
             >
               All Users
             </button>

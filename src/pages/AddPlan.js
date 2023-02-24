@@ -1,23 +1,23 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import { useHistory, useParams } from 'react-router-dom';
-import Alert from '@material-ui/lab/Alert';
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { useHistory, useParams } from "react-router-dom";
+import Alert from "@material-ui/lab/Alert";
 function AddPlan() {
   const history = useHistory();
-  const AcessToken = localStorage.getItem('use');
+  const AcessToken = localStorage.getItem("use");
   useEffect(() => {
-    const data = localStorage.getItem('use');
+    const data = localStorage.getItem("use");
     console.log(JSON.parse(data));
     if (!data) {
-      history.push('/employee/login');
+      history.push("/employee/login");
     }
   }, [history]);
   const [err, seterr] = useState(false);
-  const [message, setmessage] = useState('');
+  const [message, setmessage] = useState("");
   const [startDate, setStartDate] = useState(new Date());
-  const [plan, setplan] = useState('BIMONTHLY');
+  const [plan, setplan] = useState("BIMONTHLY");
   const [amount, setamount] = useState(0.0);
   const { id } = useParams();
 
@@ -26,7 +26,7 @@ function AddPlan() {
     console.log(startDate);
     e.preventDefault();
     const { data } = await axios.post(
-      `/ea/user/plan/create/${id}`,
+      `/api/user/plan/create/${id}`,
       {
         startDate,
         amount,
@@ -34,13 +34,13 @@ function AddPlan() {
       },
       {
         headers: {
-          authorization: 'Bearer ' + JSON.parse(AcessToken).token,
+          authorization: "Bearer " + JSON.parse(AcessToken).token,
         },
       }
     );
     console.log(data);
 
-    if (data === 'success') {
+    if (data === "success") {
       history.push(`/employee/users/update/${id}`);
     } else {
       seterr(true);
@@ -68,8 +68,8 @@ function AddPlan() {
                   onChange={(e) => setplan(e.target.value)}
                   className="form-control"
                 >
-                  <option value={'BIMONTHLY'}>BIMONTHLY</option>
-                  <option value={'SEMIANNUAL'}>SEMIANNUAL</option>
+                  <option value={"BIMONTHLY"}>BIMONTHLY</option>
+                  <option value={"SEMIANNUAL"}>SEMIANNUAL</option>
                 </select>
               </div>
 
@@ -99,7 +99,7 @@ function AddPlan() {
                 <button
                   onClick={() => history.push(`/employee/users/update/${id}`)}
                   style={{
-                    marginLeft: '20px',
+                    marginLeft: "20px",
                   }}
                   type="button"
                   className="btn btn-danger mt-4"
@@ -131,11 +131,11 @@ function AddPlan() {
             </div>
           </>
         ) : (
-          ''
+          ""
         )}
         <div className="row">
           <div className="col-md-6 mt-4">
-            {err ? <Alert severity="error">{message}</Alert> : ''}
+            {err ? <Alert severity="error">{message}</Alert> : ""}
           </div>
         </div>
       </div>

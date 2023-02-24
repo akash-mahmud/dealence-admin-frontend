@@ -1,49 +1,48 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import { useHistory, useParams } from 'react-router-dom';
-      import Alert from '@material-ui/lab/Alert';
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { useHistory, useParams } from "react-router-dom";
+import Alert from "@material-ui/lab/Alert";
 
 function AddTransaction() {
-    const [err, seterr] = useState(false);
-   const AcessToken = localStorage.getItem('use');
-    const [message, setmessage] = useState('');
-      const [startDate, setStartDate] = useState(new Date());
-const [amount, setamount] = useState(0.0)
-const {id} = useParams()
-   const history = useHistory();
-     useEffect(() => {
-       const data = localStorage.getItem('use');
-       console.log(JSON.parse(data));
-       if (!data) {
-         history.push('/employee/login');
-       }
-     }, [history]);
-      const subMitHandel = async(e) => {
-               e.preventDefault();
-const { data } = await axios.post(
-  `/ea/user/transaction/add/${id}`,
-  {
-    startDate,
-    amount,
-  },
-  {
-    headers: {
-      authorization: 'Bearer ' + JSON.parse(AcessToken).token,
-    },
-  }
-);
-    console.log(data); 
-    
-    if (data === 'success') {
+  const [err, seterr] = useState(false);
+  const AcessToken = localStorage.getItem("use");
+  const [message, setmessage] = useState("");
+  const [startDate, setStartDate] = useState(new Date());
+  const [amount, setamount] = useState(0.0);
+  const { id } = useParams();
+  const history = useHistory();
+  useEffect(() => {
+    const data = localStorage.getItem("use");
+    console.log(JSON.parse(data));
+    if (!data) {
+      history.push("/employee/login");
+    }
+  }, [history]);
+  const subMitHandel = async (e) => {
+    e.preventDefault();
+    const { data } = await axios.post(
+      `/api/user/transaction/add/${id}`,
+      {
+        startDate,
+        amount,
+      },
+      {
+        headers: {
+          authorization: "Bearer " + JSON.parse(AcessToken).token,
+        },
+      }
+    );
+    console.log(data);
+
+    if (data === "success") {
       history.push(`/employee/users/update/${id}`);
     } else {
       seterr(true);
       setmessage(data);
     }
-}
-
+  };
 
   return (
     <>
@@ -84,7 +83,7 @@ const { data } = await axios.post(
                 <button
                   onClick={() => history.push(`/employee/users/update/${id}`)}
                   style={{
-                    marginLeft: '20px',
+                    marginLeft: "20px",
                   }}
                   type="button"
                   className="btn btn-danger"
@@ -97,7 +96,7 @@ const { data } = await axios.post(
         </div>
         <div className="row">
           <div className="col-md-6 mt-4">
-            {err ? <Alert severity="error">{message}</Alert> : ''}
+            {err ? <Alert severity="error">{message}</Alert> : ""}
           </div>
         </div>
       </div>

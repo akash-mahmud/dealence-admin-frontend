@@ -1,28 +1,28 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { useHistory } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { useHistory } from "react-router-dom";
 function Login() {
   const [email, setEmail] = useState();
   const history = useHistory();
   useEffect(() => {
-    const data = localStorage.getItem('use');
+    const data = localStorage.getItem("use");
 
     if (data) {
-      history.push('/employee');
+      history.push("/employee");
     }
   }, [history]);
   const [password, setpassword] = useState();
 
   const submit = async () => {
-    const res = await axios.post('/ea/users/login', {
+    const res = await axios.post("/api/users/login", {
       email,
       password,
     });
 
     if (res.status === 200) {
-      localStorage.setItem('use', JSON.stringify(res.data));
-      window.location.reload()
-      history.push('/employee');
+      localStorage.setItem("use", JSON.stringify(res.data));
+      window.location.reload();
+      history.push("/employee");
     }
   };
   return (

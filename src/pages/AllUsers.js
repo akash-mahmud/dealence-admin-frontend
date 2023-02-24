@@ -1,68 +1,68 @@
-import React, { useEffect, useState } from 'react'
-import axios from 'axios';
-import { useHistory } from 'react-router-dom';
-import userServices from '../services/userServices'
-import Pagination from '@material-ui/lab/Pagination';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { useHistory } from "react-router-dom";
+import userServices from "../services/userServices";
+import Pagination from "@material-ui/lab/Pagination";
 function AllUsers() {
   const history = useHistory();
-   const AcessToken = localStorage.getItem('use');
-    const [users, setUsers] = useState([]);
-      const getUsers = async () => {
-        const { data } = await axios.get('/ea/users/verified');
-        setUsers(data);
-      };
-    // useEffect(() => {
-    // getUsers()
-    // }, []) 
-    console.log(users);
+  const AcessToken = localStorage.getItem("use");
+  const [users, setUsers] = useState([]);
+  const getUsers = async () => {
+    const { data } = await axios.get("/api/users/verified");
+    setUsers(data);
+  };
+  // useEffect(() => {
+  // getUsers()
+  // }, [])
+  console.log(users);
   const [searchEmail, setSearchEmail] = useState();
 
-      const getSearchedUser = async () => {
-        const { data } = await axios.post(
-          '/ea/users/search',
-          {
-            searchEmail,
-          },
-          {
-            headers: {
-              authorization: 'Bearer ' + JSON.parse(AcessToken).token,
-            },
-          }
-        );
-        setUsers(data);
-      };
-      const getRequestParams = ( page, pageSize) => {
-        let params = {};
+  const getSearchedUser = async () => {
+    const { data } = await axios.post(
+      "/api/users/search",
+      {
+        searchEmail,
+      },
+      {
+        headers: {
+          authorization: "Bearer " + JSON.parse(AcessToken).token,
+        },
+      }
+    );
+    setUsers(data);
+  };
+  const getRequestParams = (page, pageSize) => {
+    let params = {};
 
-        // if (searchTitle) {
-        //   params['title'] = searchTitle;
-        // }
+    // if (searchTitle) {
+    //   params['title'] = searchTitle;
+    // }
 
-        if (page) {
-          params['page'] = page - 1;
-        }
+    if (page) {
+      params["page"] = page - 1;
+    }
 
-        if (pageSize) {
-          params['size'] = pageSize;
-        }
+    if (pageSize) {
+      params["size"] = pageSize;
+    }
 
-        return params;
-      };
-        const handlePageChange = (event, value) => {
-          setPage(value);
-        };
+    return params;
+  };
+  const handlePageChange = (event, value) => {
+    setPage(value);
+  };
   const [page, setPage] = useState(1);
   const [count, setCount] = useState(0);
   const [pageSize, setPageSize] = useState(10);
-    useEffect(() => {
-      const data = localStorage.getItem('use');
-      console.log(JSON.parse(data));
-      if (!data) {
-        history.push('/employee/login');
-      }
-    }, [history]);
+  useEffect(() => {
+    const data = localStorage.getItem("use");
+    console.log(JSON.parse(data));
+    if (!data) {
+      history.push("/employee/login");
+    }
+  }, [history]);
   const retrieveTutorials = () => {
-    const params = getRequestParams( page, pageSize);
+    const params = getRequestParams(page, pageSize);
 
     userServices
       .getAll(params)
@@ -89,7 +89,7 @@ function AllUsers() {
               type="button"
               className="btn  btn-danger"
               style={{
-                color: '#fff',
+                color: "#fff",
               }}
               onClick={() => history.push(`/employee`)}
             >
@@ -113,7 +113,7 @@ function AllUsers() {
               type="button"
               className="btn  btn-primary"
               style={{
-                color: '#fff',
+                color: "#fff",
               }}
               onClick={getSearchedUser}
               disabled={!searchEmail}
@@ -154,7 +154,7 @@ function AllUsers() {
                           type="button"
                           className="btn  btn-secondary"
                           style={{
-                            color: '#fff',
+                            color: "#fff",
                           }}
                           onClick={() =>
                             history.push(
@@ -190,4 +190,4 @@ function AllUsers() {
   );
 }
 
-export default AllUsers
+export default AllUsers;

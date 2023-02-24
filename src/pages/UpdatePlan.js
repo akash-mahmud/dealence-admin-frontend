@@ -1,53 +1,52 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import { useHistory, useParams } from 'react-router-dom';
-      import Alert from '@material-ui/lab/Alert';
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { useHistory, useParams } from "react-router-dom";
+import Alert from "@material-ui/lab/Alert";
 function UpdatePlan() {
-   const AcessToken = localStorage.getItem('use');
+  const AcessToken = localStorage.getItem("use");
 
-    const [err, seterr] = useState(false);
-    const [message, setmessage] = useState('');
-        const [startDate, setStartDate] = useState(new Date());
-        const [plan, setplan] = useState('BIMONTHLY');
-        const [amount, setamount] = useState(0.0);
-        const { id } = useParams();
-        const history = useHistory();
+  const [err, seterr] = useState(false);
+  const [message, setmessage] = useState("");
+  const [startDate, setStartDate] = useState(new Date());
+  const [plan, setplan] = useState("BIMONTHLY");
+  const [amount, setamount] = useState(0.0);
+  const { id } = useParams();
+  const history = useHistory();
   useEffect(() => {
-    const data = localStorage.getItem('use');
+    const data = localStorage.getItem("use");
     console.log(JSON.parse(data));
     if (!data) {
-      history.push('/employee/login');
+      history.push("/employee/login");
     }
   }, [history]);
-        const subMitHandel = async (e) => {
-          console.log(typeof startDate);
-          console.log(startDate);
-          e.preventDefault();
-          const { data } = await axios.post(
-            `/ea/user/updatePlan/${id}`,
-            {
-              startDate,
-              amount,
-              plan,
-            },
-            {
-              headers: {
-                authorization: 'Bearer ' + JSON.parse(AcessToken).token,
-              },
-            }
-          );
-          console.log(data);
+  const subMitHandel = async (e) => {
+    console.log(typeof startDate);
+    console.log(startDate);
+    e.preventDefault();
+    const { data } = await axios.post(
+      `/api/user/updatePlan/${id}`,
+      {
+        startDate,
+        amount,
+        plan,
+      },
+      {
+        headers: {
+          authorization: "Bearer " + JSON.parse(AcessToken).token,
+        },
+      }
+    );
+    console.log(data);
 
-          if (data.message === 'success') {
-            history.push(`/employee/users/update/${id}`);
-          }else{
-                 seterr(true);
-                 setmessage(data.message);
-          }
-        };
-
+    if (data.message === "success") {
+      history.push(`/employee/users/update/${id}`);
+    } else {
+      seterr(true);
+      setmessage(data.message);
+    }
+  };
 
   return (
     <>
@@ -69,8 +68,8 @@ function UpdatePlan() {
                   onChange={(e) => setplan(e.target.value)}
                   className="form-control"
                 >
-                  <option value={'BIMONTHLY'}>BIMONTHLY</option>
-                  <option value={'SEMIANNUAL'}>SEMIANNUAL</option>
+                  <option value={"BIMONTHLY"}>BIMONTHLY</option>
+                  <option value={"SEMIANNUAL"}>SEMIANNUAL</option>
                 </select>
               </div>
 
@@ -100,7 +99,7 @@ function UpdatePlan() {
                 <button
                   onClick={() => history.push(`/employee/users/update/${id}`)}
                   style={{
-                    marginLeft: '20px',
+                    marginLeft: "20px",
                   }}
                   type="button"
                   className="btn btn-danger mt-4"
@@ -132,11 +131,11 @@ function UpdatePlan() {
             </div>
           </>
         ) : (
-          ''
+          ""
         )}
         <div className="row">
           <div className="col-md-6 mt-4">
-            {err ? <Alert severity="error">{message}</Alert> : ''}
+            {err ? <Alert severity="error">{message}</Alert> : ""}
           </div>
         </div>
       </div>
