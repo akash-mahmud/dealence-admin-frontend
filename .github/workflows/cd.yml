@@ -32,4 +32,5 @@ jobs:
           touch .env
           echo "${{ secrets.ENV_FILE }}" > .env
           sudo pnpm install --only=prod
+          sudo pnpm run build
           sudo pm2 restart dealence-admin-frontend
