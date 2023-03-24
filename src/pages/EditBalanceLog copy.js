@@ -4,8 +4,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useHistory, useParams } from "react-router-dom";
 import Alert from "@material-ui/lab/Alert";
-import { Select } from "@material-ui/core";
-function AddBalanceHistoryLog() {
+function EditBalanceLog() {
   const history = useHistory();
   const AcessToken = localStorage.getItem("use");
   useEffect(() => {
@@ -21,10 +20,10 @@ function AddBalanceHistoryLog() {
   const [balance, setBalance] = useState(0.0);
   const { id } = useParams();
   const [contract, setcontract] = useState("");
-  const subMitHandel = async (e) => {
+  const updateHandler = async (e) => {
     e.preventDefault();
     const { data } = await axios.post(
-      `/api/user/balancelog/create/${id}`,
+      `/api/user/editbalancelog/${id}`,
       {
         startDate,
         balance,
@@ -117,11 +116,11 @@ function AddBalanceHistoryLog() {
               </div>
               <div className="col">
                 <button
-                  onClick={subMitHandel}
+                  onClick={updateHandler}
                   type="button"
                   className="btn btn-primary mt-4"
                 >
-                  Add
+                  Update
                 </button>
                 <button
                   onClick={() => history.push(`/employee/users/update/${id}`)}
@@ -170,4 +169,4 @@ function AddBalanceHistoryLog() {
   );
 }
 
-export default AddBalanceHistoryLog;
+export default EditBalanceLog;

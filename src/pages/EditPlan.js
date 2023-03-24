@@ -4,46 +4,17 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useHistory, useParams } from "react-router-dom";
 import Alert from "@material-ui/lab/Alert";
-import { Select } from "@material-ui/core";
-function AddBalanceHistoryLog() {
-  const history = useHistory();
+function EditPlan() {
   const AcessToken = localStorage.getItem("use");
-  useEffect(() => {
-    const data = localStorage.getItem("use");
 
-    if (!data) {
-      history.push("/employee/login");
-    }
-  }, [history]);
   const [err, seterr] = useState(false);
   const [message, setmessage] = useState("");
   const [startDate, setStartDate] = useState(new Date());
-  const [balance, setBalance] = useState(0.0);
-  const { id } = useParams();
+  const [plan, setplan] = useState("BIMONTHLY");
   const [contract, setcontract] = useState("");
-  const subMitHandel = async (e) => {
-    e.preventDefault();
-    const { data } = await axios.post(
-      `/api/user/balancelog/create/${id}`,
-      {
-        startDate,
-        balance,
-        contract,
-      },
-      {
-        headers: {
-          authorization: "Bearer " + JSON.parse(AcessToken).token,
-        },
-      }
-    );
-
-    if (data === "success") {
-      history.push(`/employee/user/balancelogs/${id}`);
-    } else {
-      seterr(true);
-      setmessage(data);
-    }
-  };
+  const [amount, setamount] = useState(0.0);
+  const { id, increamentId, contract: userContract } = useParams();
+  const history = useHistory();
   const [users, setUsers] = useState({});
   const getUser = async () => {
     const { data } = await axios.get(`/api/users/verified/${id}`, {
@@ -79,6 +50,42 @@ function AddBalanceHistoryLog() {
   useEffect(() => {
     getUser();
   }, []);
+
+  console.log(users);
+  useEffect(() => {
+    const data = localStorage.getItem("use");
+
+    if (!data) {
+      history.push("/employee/login");
+    }
+  }, [history]);
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    const { data } = await axios.post(
+      `/api/user/editPlan/${id}/${increamentId}`,
+      {
+        startDate,
+        amount,
+        plan,
+        contract,
+      },
+      {
+        headers: {
+          authorization: "Bearer " + JSON.parse(AcessToken).token,
+        },
+      }
+    );
+
+    if (data === "success") {
+      seterr(false);
+      setmessage("");
+      history.push(`/employee/user/plans/${id}`);
+    } else {
+      seterr(true);
+      setmessage(data);
+    }
+  };
+
   return (
     <>
       <div className="container">
@@ -86,11 +93,11 @@ function AddBalanceHistoryLog() {
           <form className="mt-4">
             <div className="row">
               <div className="col">
-                <label>Balance</label>
+                <label>Amount</label>
                 <input
                   type="number"
                   className="form-control"
-                  onChange={(e) => setBalance(e.target.value)}
+                  onChange={(e) => setamount(e.target.value)}
                 />
               </div>
               <div className="col">
@@ -100,11 +107,24 @@ function AddBalanceHistoryLog() {
                   className="form-control"
                 >
                   <option value={undefined}>Select contract</option>
-                  {users?.contracts?.split(",")?.map((contract) => (
-                    <option value={contract}>{contract}</option>
+                  {users?.contracts?.split(",")?.map((contract, index) => (
+                    <option key={index} value={contract}>
+                      {contract}
+                    </option>
                   ))}
                 </select>
               </div>
+              <div className="col">
+                <label>Select Plan</label>
+                <select
+                  onChange={(e) => setplan(e.target.value)}
+                  className="form-control"
+                >
+                  <option value={"BIMONTHLY"}>BIMONTHLY</option>
+                  <option value={"SEMIANNUAL"}>SEMIANNUAL</option>
+                </select>
+              </div>
+
               <div className="col">
                 <label>Select date</label>
                 <DatePicker
@@ -112,19 +132,24 @@ function AddBalanceHistoryLog() {
                   selected={startDate}
                   onChange={(date) => {
                     setStartDate(date);
+                    //
+                    //
+                    //
+                    //
+                    //
                   }}
                 />
               </div>
               <div className="col">
                 <button
-                  onClick={subMitHandel}
+                  onClick={submitHandler}
                   type="button"
                   className="btn btn-primary mt-4"
                 >
-                  Add
+                  Update
                 </button>
                 <button
-                  onClick={() => history.push(`/employee/users/update/${id}`)}
+                  onClick={() => history.push(`/employee/users/plans/${id}`)}
                   style={{
                     marginLeft: "20px",
                   }}
@@ -170,4 +195,4 @@ function AddBalanceHistoryLog() {
   );
 }
 
-export default AddBalanceHistoryLog;
+export default EditPlan;

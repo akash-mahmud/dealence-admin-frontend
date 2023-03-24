@@ -1,22 +1,26 @@
-import React from 'react';
-import { Switch, Route } from 'react-router-dom';
-import './App.css';
-import AddPayOutDirect from './pages/AddPayOutDirect';
-import AddPlan from './pages/AddPlan';
-import AddTransaction from './pages/AddTransaction';
-import AllUsers from './pages/AllUsers';
-import DecreaseBalance from './pages/DecreaseBalance';
-import DecreasePayout from './pages/DecreasePayout';
-import Home from './pages/Home';
-import Login from './pages/Login';
-import UpdatePlan from './pages/UpdatePlan';
-import UpdateUser from './pages/UpdateUser';
-import WithdrawBalance from './pages/WithdrawBalance';
-import WithdrawPayout from './pages/WithdrawPayout';
-import Plans from './pages/Plans';
-import AddBalanceHistoryLog from './pages/AddBalanceHistoryLog';
+import React from "react";
+import { Switch, Route } from "react-router-dom";
+import "./App.css";
+import AddPayOutDirect from "./pages/AddPayOutDirect";
+import AddPlan from "./pages/AddPlan";
+import AddTransaction from "./pages/AddTransaction";
+import AllUsers from "./pages/AllUsers";
+import DecreaseBalance from "./pages/DecreaseBalance";
+import DecreasePayout from "./pages/DecreasePayout";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import UpdatePlan from "./pages/UpdatePlan";
+import UpdateUser from "./pages/UpdateUser";
+import WithdrawBalance from "./pages/WithdrawBalance";
+import WithdrawPayout from "./pages/WithdrawPayout";
+import Plans from "./pages/Plans";
+import AddBalanceHistoryLog from "./pages/AddBalanceHistoryLog";
+import EditPlan from "./pages/EditPlan";
+import AddTotalPaid from "./pages/AddTotalPaid";
+import TotalPaids from "./pages/TotalPaids";
+import BalanceLogs from "./pages/BalanceLogs";
+import EditBalanceLog from "./pages/EditBalanceLog";
 function App() {
- 
   return (
     <>
       <Switch>
@@ -31,6 +35,24 @@ function App() {
         </Route>
         <Route exact={true} path="/employee/user/addplan/:id">
           <AddPlan />
+        </Route>
+        <Route exact={true} path="/employee/user/addbalancelog/:id">
+          <AddBalanceHistoryLog />
+        </Route>
+        <Route exact={true} path="/employee/user/balancelogs/:id">
+          <BalanceLogs />
+        </Route>
+        <Route exact={true} path="/employee/user/totalpaids/:id">
+          <TotalPaids />
+        </Route>
+        <Route
+          exact={true}
+          path="/employee/user/editplan/:id/:increamentId/:contract"
+        >
+          <EditPlan />
+        </Route>
+        <Route exact={true} path="/employee/user/editbalancelog/:id">
+          <EditBalanceLog />
         </Route>
         <Route
           exact={true}

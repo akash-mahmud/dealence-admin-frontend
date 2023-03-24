@@ -4,7 +4,7 @@ import { useHistory, useParams } from "react-router-dom";
 import userServices from "../services/userServices";
 import Pagination from "@material-ui/lab/Pagination";
 
-function Plans() {
+function TotalPaids() {
   const { id } = useParams();
   const history = useHistory();
   const AcessToken = localStorage.getItem("use");
@@ -44,11 +44,11 @@ function Plans() {
       history.push("/employee/login");
     }
   }, [history]);
-  const retrieveTutorials = () => {
+  const fetchTotalPaids = () => {
     const params = getRequestParams(page, pageSize);
 
     userServices
-      .getAllPlans(params, id)
+      .getTotalPaids(params, id)
       .then((response) => {
         const { increment, totalPages } = response.data;
 
@@ -58,7 +58,7 @@ function Plans() {
       .catch((e) => {});
   };
 
-  useEffect(retrieveTutorials, [page, pageSize]);
+  useEffect(fetchTotalPaids, [page, pageSize]);
   const deleteData = async (id) => {
     const { data } = await axios.delete(
       `/api/users/verified/plan/delete/${id}`,
@@ -69,7 +69,7 @@ function Plans() {
       }
     );
     if (data === "success") {
-      retrieveTutorials();
+      fetchTotalPaids();
     }
   };
   return (
@@ -79,24 +79,10 @@ function Plans() {
           <div className="col-md-2 col-lg-12">
             <button
               type="button"
-              className="btn btn-success"
-              onClick={() => history.push(`/employee/user/balancelogs/${id}`)}
+              className="btn btn-info"
+              onClick={() => history.push(`/employee/user/addtotalpaid/${id}`)}
             >
-              All Balance Log
-            </button>
-            <button
-              type="button"
-              className="btn btn-info mx-2"
-              onClick={() => history.push(`/employee/user/totalpaids/${id}`)}
-            >
-              Total Paids
-            </button>
-            <button
-              type="button"
-              className="btn btn-primary"
-              onClick={() => history.push(`/employee/users/update/${id}`)}
-            >
-              Available Credit
+              Add Total Paid
             </button>
             <button
               type="button"
@@ -172,4 +158,4 @@ function Plans() {
   );
 }
 
-export default Plans;
+export default TotalPaids;

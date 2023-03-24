@@ -1,9 +1,9 @@
-import http from '../http-common';
+import http from "../http-common";
 
-   const AcessToken = localStorage.getItem('use');
+const AcessToken = localStorage.getItem("use");
 const getAll = (params) => {
   return http.get(
-    '/users/verified',
+    "/users/verified",
     // {
     //   headers: {
     //     authorization: 'Bearer ' + JSON.parse(AcessToken).token,
@@ -12,15 +12,15 @@ const getAll = (params) => {
     {
       params,
       headers: {
-        authorization: 'Bearer ' + JSON.parse(AcessToken).token,
+        authorization: "Bearer " + JSON.parse(AcessToken).token,
       },
     }
   );
 };
 
-const getAllPlans = (params , id) => {
+const getAllPlans = (params, id) => {
   return http.get(
-   `/users/verified/plans/${id}`,
+    `/users/verified/plans/${id}`,
     // {
     //   headers: {
     //     authorization: 'Bearer ' + JSON.parse(AcessToken).token,
@@ -29,18 +29,35 @@ const getAllPlans = (params , id) => {
     {
       params,
       headers: {
-        authorization: 'Bearer ' + JSON.parse(AcessToken).token,
+        authorization: "Bearer " + JSON.parse(AcessToken).token,
       },
     }
   );
 };
 
+const getAllBalanceLogs = (params, id) => {
+  return http.get(`/users/verified/balancelogs/${id}`, {
+    params,
+    headers: {
+      authorization: "Bearer " + JSON.parse(AcessToken).token,
+    },
+  });
+};
 
+const getTotalPaids = (params, id) => {
+  return http.get(`/users/verified/totalpaids/${id}`, {
+    params,
+    headers: {
+      authorization: "Bearer " + JSON.parse(AcessToken).token,
+    },
+  });
+};
 
 const usersService = {
   getAll,
-
-  getAllPlans
+  getAllPlans,
+  getAllBalanceLogs,
+  getTotalPaids,
 };
 
 export default usersService;
