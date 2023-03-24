@@ -20,6 +20,7 @@ import AddTotalPaid from "./pages/AddTotalPaid";
 import TotalPaids from "./pages/TotalPaids";
 import BalanceLogs from "./pages/BalanceLogs";
 import EditBalanceLog from "./pages/EditBalanceLog";
+import EditTotalPaid from "./pages/EditTotalPaid";
 function App() {
   return (
     <>
@@ -38,6 +39,9 @@ function App() {
         </Route>
         <Route exact={true} path="/employee/user/addtotalpaid/:id">
           <AddTotalPaid />
+        </Route>
+        <Route exact={true} path="/employee/user/edittotalpaid/:id/:contruct">
+          <EditTotalPaid />
         </Route>
         <Route exact={true} path="/employee/user/addbalancelog/:id">
           <AddBalanceHistoryLog />

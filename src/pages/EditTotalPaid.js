@@ -4,7 +4,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useHistory, useParams } from "react-router-dom";
 import Alert from "@material-ui/lab/Alert";
-function EditBalanceLog() {
+function EditTotalPaid() {
   const history = useHistory();
   const AcessToken = localStorage.getItem("use");
   useEffect(() => {
@@ -17,16 +17,16 @@ function EditBalanceLog() {
   const [err, seterr] = useState(false);
   const [message, setmessage] = useState("");
   const [startDate, setStartDate] = useState(new Date());
-  const [balance, setBalance] = useState(0.0);
+  const [totalPaid, setTotalPaid] = useState(0.0);
   const { id } = useParams();
   const [contract, setcontract] = useState("");
   const updateHandler = async (e) => {
     e.preventDefault();
     const { data } = await axios.post(
-      `/api/user/editbalancelog/${id}`,
+      `/api/user/edittotalpaid/${id}`,
       {
         startDate,
-        balance,
+        totalPaid,
         contract,
       },
       {
@@ -37,7 +37,7 @@ function EditBalanceLog() {
     );
 
     if (data === "success") {
-      history.push(`/employee/user/balancelogs/${id}`);
+      history.push(`/employee/user/totalpaids/${id}`);
     } else {
       seterr(true);
       setmessage(data);
@@ -85,11 +85,11 @@ function EditBalanceLog() {
           <form className="mt-4">
             <div className="row">
               <div className="col">
-                <label>Balance</label>
+                <label>Total Paid</label>
                 <input
                   type="number"
                   className="form-control"
-                  onChange={(e) => setBalance(e.target.value)}
+                  onChange={(e) => setTotalPaid(e.target.value)}
                 />
               </div>
               <div className="col">
@@ -169,4 +169,4 @@ function EditBalanceLog() {
   );
 }
 
-export default EditBalanceLog;
+export default EditTotalPaid;

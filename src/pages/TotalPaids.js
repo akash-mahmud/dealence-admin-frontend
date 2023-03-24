@@ -126,7 +126,9 @@ function TotalPaids() {
                           className="btn btn-info"
                           onClick={() =>
                             history.push(
-                              `/employee/user/editplan/${currentUser.userId}/${currentUser.id}/${currentUser.contract}`
+                              `/employee/user/edittotalpaid/${
+                                currentUser.userId
+                              }/${currentUser.contract.split("#")[1]}`
                             )
                           }
                         >
