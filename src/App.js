@@ -14,6 +14,7 @@ import UpdateUser from './pages/UpdateUser';
 import WithdrawBalance from './pages/WithdrawBalance';
 import WithdrawPayout from './pages/WithdrawPayout';
 import Plans from './pages/Plans';
+import AddBalanceHistoryLog from './pages/AddBalanceHistoryLog';
 function App() {
  
   return (
@@ -31,13 +32,19 @@ function App() {
         <Route exact={true} path="/employee/user/addplan/:id">
           <AddPlan />
         </Route>
+        <Route
+          exact={true}
+          path="/employee/users/add/balanceHistory/:id/:contract"
+        >
+          <AddBalanceHistoryLog />
+        </Route>
         <Route exact={true} path="/employee/user/updatePlan/:id">
           <UpdatePlan />
         </Route>
         <Route exact={true} path="/employee/users/update/:id">
           <UpdateUser />
         </Route>
-  <Route exact={true} path="/employee/users/plans/:id">
+        <Route exact={true} path="/employee/users/plans/:id">
           <Plans />
         </Route>
         <Route exact={true} path="/employee/users/add/payout/direct/:id">

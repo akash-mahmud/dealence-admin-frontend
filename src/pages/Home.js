@@ -27,7 +27,7 @@ function Home() {
   }, []);
 
   const approve = async (id) => {
-    console.log(id);
+   
     const { data } = await axios.post(
       `/api/users`,
       { id: id },
@@ -40,7 +40,7 @@ function Home() {
     getUsers();
   };
   const discard = async (id) => {
-    console.log(id);
+   
     const { data } = await axios.post(
       `/api/users/discard`,
       { id: id },

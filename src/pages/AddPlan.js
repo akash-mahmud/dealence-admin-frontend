@@ -4,12 +4,13 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useHistory, useParams } from "react-router-dom";
 import Alert from "@material-ui/lab/Alert";
+import {Select} from "@material-ui/core";
 function AddPlan() {
   const history = useHistory();
   const AcessToken = localStorage.getItem("use");
   useEffect(() => {
     const data = localStorage.getItem("use");
-    console.log(JSON.parse(data));
+
     if (!data) {
       history.push("/employee/login");
     }
@@ -20,10 +21,8 @@ function AddPlan() {
   const [plan, setplan] = useState("BIMONTHLY");
   const [amount, setamount] = useState(0.0);
   const { id } = useParams();
-
+  const [contract, setcontract] = useState("");
   const subMitHandel = async (e) => {
-    console.log(typeof startDate);
-    console.log(startDate);
     e.preventDefault();
     const { data } = await axios.post(
       `/api/user/plan/create/${id}`,
@@ -31,6 +30,7 @@ function AddPlan() {
         startDate,
         amount,
         plan,
+        contract,
       },
       {
         headers: {
@@ -38,7 +38,6 @@ function AddPlan() {
         },
       }
     );
-    console.log(data);
 
     if (data === "success") {
       history.push(`/employee/users/update/${id}`);
@@ -47,7 +46,41 @@ function AddPlan() {
       setmessage(data);
     }
   };
-
+  const [users, setUsers] = useState({});
+  const getUser = async () => {
+    const { data } = await axios.get(`/api/users/verified/${id}`, {
+      headers: {
+        authorization: "Bearer " + JSON.parse(AcessToken).token,
+      },
+    });
+    const {
+      first_name,
+      last_name,
+      email,
+      phone_number,
+      address,
+      city,
+      state,
+      zip,
+      country,
+      contracts,
+    } = data[0];
+    setUsers({
+      first_name,
+      last_name,
+      email,
+      phone_number,
+      address,
+      city,
+      state,
+      zip,
+      country,
+      contracts,
+    });
+  };
+  useEffect(() => {
+    getUser();
+  }, []);
   return (
     <>
       <div className="container">
@@ -61,6 +94,18 @@ function AddPlan() {
                   className="form-control"
                   onChange={(e) => setamount(e.target.value)}
                 />
+              </div>
+              <div className="col">
+                <label>Select Contract</label>
+                <select
+                  onChange={(e) => setcontract(e.target.value)}
+                  className="form-control"
+                >
+                  <option value={undefined}>Select contract</option>
+                  {users?.contracts?.split(",")?.map((contract) => (
+                    <option value={contract}>{contract}</option>
+                  ))}
+                </select>
               </div>
               <div className="col">
                 <label>Select Plan</label>
@@ -80,11 +125,11 @@ function AddPlan() {
                   selected={startDate}
                   onChange={(date) => {
                     setStartDate(date);
-                    // console.log(date);
-                    // console.log(Date.now(date));
-                    // console.log(new Date(date));
-                    // console.log(new Date(date).getTime());
-                    // console.log(new Date(date).getTime().toLocaleString());
+                    //
+                    //
+                    //
+                    //
+                    //
                   }}
                 />
               </div>

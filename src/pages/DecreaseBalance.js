@@ -14,7 +14,7 @@ function DecreaseBalance() {
   const AcessToken = localStorage.getItem("use");
   useEffect(() => {
     const data = localStorage.getItem("use");
-    console.log(JSON.parse(data));
+   
     if (!data) {
       history.push("/employee/login");
     }
@@ -33,7 +33,7 @@ function DecreaseBalance() {
         },
       }
     );
-    console.log(data);
+   
 
     if (data === "success") {
       history.push(`/employee/users/update/${id}`);
@@ -62,11 +62,11 @@ function DecreaseBalance() {
                   selected={startDate}
                   onChange={(date) => {
                     setStartDate(date);
-                    // console.log(date);
-                    // console.log(Date.now(date));
-                    // console.log(new Date(date));
-                    // console.log(new Date(date).getTime());
-                    // console.log(new Date(date).getTime().toLocaleString());
+                    //
+                    //
+                    //
+                    //
+                    //
                   }}
                 />
               </div> */}

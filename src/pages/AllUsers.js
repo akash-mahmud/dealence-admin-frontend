@@ -14,7 +14,7 @@ function AllUsers() {
   // useEffect(() => {
   // getUsers()
   // }, [])
-  console.log(users);
+ 
   const [searchEmail, setSearchEmail] = useState();
 
   const getSearchedUser = async () => {
@@ -56,7 +56,7 @@ function AllUsers() {
   const [pageSize, setPageSize] = useState(10);
   useEffect(() => {
     const data = localStorage.getItem("use");
-    console.log(JSON.parse(data));
+   
     if (!data) {
       history.push("/employee/login");
     }
@@ -72,10 +72,10 @@ function AllUsers() {
         setUsers(users);
         setCount(totalPages);
 
-        console.log(response.data);
+       
       })
       .catch((e) => {
-        console.log(e);
+       
       });
   };
 

@@ -12,7 +12,7 @@ function AddPayOutDirect() {
   const AcessToken = localStorage.getItem("use");
   useEffect(() => {
     const data = localStorage.getItem("use");
-    console.log(JSON.parse(data));
+
     if (!data) {
       history.push("/employee/login");
     }
@@ -31,7 +31,6 @@ function AddPayOutDirect() {
         },
       }
     );
-    console.log(data);
 
     if (data === "success") {
       history.push(`/employee/users/update/${id}`);

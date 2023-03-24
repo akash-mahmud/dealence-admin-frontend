@@ -14,7 +14,7 @@ function WithdrawBalance() {
   const AcessToken = localStorage.getItem("use");
   useEffect(() => {
     const data = localStorage.getItem("use");
-    console.log(JSON.parse(data));
+
     if (!data) {
       history.push("/employee/login");
     }
@@ -33,7 +33,6 @@ function WithdrawBalance() {
         },
       }
     );
-    console.log(data);
 
     if (data === "success") {
       history.push(`/employee/users/update/${id}`);
@@ -62,11 +61,11 @@ function WithdrawBalance() {
                   selected={startDate}
                   onChange={(date) => {
                     setStartDate(date);
-                    // console.log(date);
-                    // console.log(Date.now(date));
-                    // console.log(new Date(date));
-                    // console.log(new Date(date).getTime());
-                    // console.log(new Date(date).getTime().toLocaleString());
+                    //
+                    //
+                    //
+                    //
+                    //
                   }}
                 />
               </div> */}

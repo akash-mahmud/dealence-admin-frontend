@@ -13,7 +13,6 @@ function Plans() {
   // useEffect(() => {
   // getUsers()
   // }, [])
-  console.log(plans);
 
   const getRequestParams = (page, pageSize) => {
     let params = {};
@@ -40,7 +39,7 @@ function Plans() {
   const [pageSize, setPageSize] = useState(10);
   useEffect(() => {
     const data = localStorage.getItem("use");
-    console.log(JSON.parse(data));
+
     if (!data) {
       history.push("/employee/login");
     }
@@ -55,17 +54,12 @@ function Plans() {
 
         setPlans(increment);
         setCount(totalPages);
-
-        console.log(response.data);
       })
-      .catch((e) => {
-        console.log(e);
-      });
+      .catch((e) => {});
   };
 
   useEffect(retrieveTutorials, [page, pageSize]);
   const deleteData = async (id) => {
-    console.log(id);
     const { data } = await axios.delete(
       `/api/users/verified/plan/delete/${id}`,
       {

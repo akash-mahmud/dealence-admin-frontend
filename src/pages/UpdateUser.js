@@ -14,7 +14,7 @@ function UpdateUser() {
   const [invest, setInvest] = useState(null);
   useEffect(() => {
     const data = localStorage.getItem("use");
-    console.log(JSON.parse(data));
+
     if (!data) {
       history.push("/employee/login");
     }
@@ -35,6 +35,7 @@ function UpdateUser() {
       state,
       zip,
       country,
+      contracts,
     } = data[0];
     setUsers({
       first_name,
@@ -46,6 +47,7 @@ function UpdateUser() {
       state,
       zip,
       country,
+      contracts,
     });
   };
   const [data, setdata] = useState();
@@ -56,18 +58,22 @@ function UpdateUser() {
       },
     });
 
-    console.log(acountData);
     setdata(acountData.data);
   };
 
   const getData = async () => {
-    const investData = await axios.get(`/api/user/investment/list/${id}`, {
-      headers: {
-        authorization: "Bearer " + JSON.parse(AcessToken).token,
-      },
-    });
+    try {
+      const investData = await axios.post(`/api/user/investment/list/${id}`, {},{
+           headers: {
+             authorization: "Bearer " + JSON.parse(AcessToken).token,
+           },
+         });
 
-    setInvest(investData.data);
+         setInvest(investData.data); 
+    } catch (error) {
+      console.log(error);
+    }
+
   };
 
   useEffect(() => {
@@ -89,7 +95,7 @@ function UpdateUser() {
         },
       }
     );
-    console.log(data);
+
     // success;
 
     if (data === "success") {
@@ -130,6 +136,18 @@ function UpdateUser() {
                 className="btn btn-primary ml-3"
               >
                 Add Available Credit
+              </button>
+              <button
+                onClick={() =>
+                  history.push(`/employee/users/add/balanceHistory/${id}`)
+                }
+                style={{
+                  marginRight: "20px",
+                }}
+                type="button"
+                className="btn btn-primary ml-3"
+              >
+                Add Balance history
               </button>
               <button
                 onClick={() =>
@@ -180,7 +198,7 @@ function UpdateUser() {
               >
                 Decrease Available Credit
               </button>
-              {invest === "" && (
+              {!invest && (
                 <button
                   onClick={() => history.push(`/employee/user/addplan/${id}`)}
                   style={{
@@ -235,6 +253,23 @@ function UpdateUser() {
           <h3>Balance: {data && data.balance && data.balance}€</h3>
           <h3>Available Credit: {data && data.credit && data.credit}€</h3>
           <form>
+            <div className="form-row mt-4">
+              <div className="form-group col-md-6">
+                <label htmlFor="inputEmail4">Contracts</label>
+                <input
+                  type="text"
+                  value={users.contracts}
+                  onChange={(e) =>
+                    setUsers({
+                      ...users,
+                      contracts: e.target.value,
+                    })
+                  }
+                  className="form-control"
+                  id="inputEmail4"
+                />
+              </div>
+            </div>
             <div className="form-row mt-4">
               <div className="form-group col-md-6">
                 <label htmlFor="inputEmail4">First Name</label>

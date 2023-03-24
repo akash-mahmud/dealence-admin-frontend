@@ -15,7 +15,7 @@ function AddTransaction() {
   const history = useHistory();
   useEffect(() => {
     const data = localStorage.getItem("use");
-    console.log(JSON.parse(data));
+
     if (!data) {
       history.push("/employee/login");
     }
@@ -34,7 +34,6 @@ function AddTransaction() {
         },
       }
     );
-    console.log(data);
 
     if (data === "success") {
       history.push(`/employee/users/update/${id}`);
@@ -64,11 +63,11 @@ function AddTransaction() {
                   selected={startDate}
                   onChange={(date) => {
                     setStartDate(date);
-                    // console.log(date);
-                    // console.log(Date.now(date));
-                    // console.log(new Date(date));
-                    // console.log(new Date(date).getTime());
-                    // console.log(new Date(date).getTime().toLocaleString());
+                    //
+                    //
+                    //
+                    //
+                    //
                   }}
                 />
               </div>
