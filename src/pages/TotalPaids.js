@@ -61,7 +61,7 @@ function TotalPaids() {
   useEffect(fetchTotalPaids, [page, pageSize]);
   const deleteData = async (id) => {
     const { data } = await axios.delete(
-      `/api/users/verified/plan/delete/${id}`,
+      `/api/users/verified/totalpaid/delete/${id}`,
       {
         headers: {
           authorization: "Bearer " + JSON.parse(AcessToken).token,
@@ -97,8 +97,8 @@ function TotalPaids() {
             <thead>
               <tr>
                 <th scope="col">Started At</th>
-                <th scope="col">Plan Type</th>
-                <th scope="col">Amount</th>
+                <th scope="col">Contract</th>
+                <th scope="col">Total Paid</th>
                 <th scope="col">Actions</th>
               </tr>
             </thead>
@@ -110,8 +110,8 @@ function TotalPaids() {
                       <td>{`${new Date(
                         currentUser.createdAt
                       ).toDateString()}`}</td>
-                      <td>{currentUser.plan}</td>
-                      <td>{currentUser.principal}</td>
+                      <td>{currentUser.contract}</td>
+                      <td>{currentUser.totalPaid}</td>
 
                       <td>
                         <button

@@ -36,8 +36,14 @@ function App() {
         <Route exact={true} path="/employee/user/addplan/:id">
           <AddPlan />
         </Route>
+        <Route exact={true} path="/employee/user/addtotalpaid/:id">
+          <AddTotalPaid />
+        </Route>
         <Route exact={true} path="/employee/user/addbalancelog/:id">
           <AddBalanceHistoryLog />
+        </Route>
+        <Route exact={true} path="/employee/user/addplan/:id">
+          <AddPlan />
         </Route>
         <Route exact={true} path="/employee/user/balancelogs/:id">
           <BalanceLogs />
