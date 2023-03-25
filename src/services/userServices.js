@@ -53,11 +53,21 @@ const getTotalPaids = (params, id) => {
   });
 };
 
+const getAllAvailableCredits = (params, id, contract) => {
+  return http.get(`/users/verified/availablecredits/${id}/${contract}`, {
+    params,
+    headers: {
+      authorization: "Bearer " + JSON.parse(AcessToken).token,
+    },
+  });
+};
+
 const usersService = {
   getAll,
   getAllPlans,
   getAllBalanceLogs,
   getTotalPaids,
+  getAllAvailableCredits,
 };
 
 export default usersService;

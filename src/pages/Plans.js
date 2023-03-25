@@ -79,27 +79,6 @@ function Plans() {
           <div className="col-md-2 col-lg-12">
             <button
               type="button"
-              className="btn btn-success"
-              onClick={() => history.push(`/employee/user/balancelogs/${id}`)}
-            >
-              All Balance Log
-            </button>
-            <button
-              type="button"
-              className="btn btn-info mx-2"
-              onClick={() => history.push(`/employee/user/totalpaids/${id}`)}
-            >
-              Total Paids
-            </button>
-            <button
-              type="button"
-              className="btn btn-primary"
-              onClick={() => history.push(`/employee/users/update/${id}`)}
-            >
-              Available Credit
-            </button>
-            <button
-              type="button"
               className="btn btn-danger ms-2"
               onClick={() => history.push(`/employee/users/update/${id}`)}
             >
@@ -118,20 +97,18 @@ function Plans() {
             </thead>
             <tbody>
               {plans &&
-                plans.map((currentUser, index) => (
+                plans.map((plan, index) => (
                   <>
                     <tr>
-                      <td>{`${new Date(
-                        currentUser.createdAt
-                      ).toDateString()}`}</td>
-                      <td>{currentUser.plan}</td>
-                      <td>{currentUser.principal}</td>
+                      <td>{`${new Date(plan.createdAt).toDateString()}`}</td>
+                      <td>{plan.plan}</td>
+                      <td>{plan.principal}</td>
 
                       <td>
                         <button
                           type="button"
                           className="btn btn-secondary me-2"
-                          onClick={() => deleteData(currentUser.id)}
+                          onClick={() => deleteData(plan.id)}
                         >
                           Remove
                         </button>
@@ -140,13 +117,44 @@ function Plans() {
                           className="btn btn-info"
                           onClick={() =>
                             history.push(
-                              `/employee/user/editplan/${currentUser.userId}/${
-                                currentUser.id
-                              }/${currentUser.contract.split("#")[1]}`
+                              `/employee/user/editplan/${plan.userId}/${
+                                plan.id
+                              }/${plan.contract.split("#")[1]}`
                             )
                           }
                         >
                           Update
+                        </button>
+                        <button
+                          type="button"
+                          className="btn btn-success mx-2"
+                          onClick={() =>
+                            history.push(`/employee/user/balancelogs/${id}`)
+                          }
+                        >
+                          All Balance Log
+                        </button>
+                        <button
+                          type="button"
+                          className="btn btn-info me-2"
+                          onClick={() =>
+                            history.push(`/employee/user/totalpaids/${id}`)
+                          }
+                        >
+                          Total Paids
+                        </button>
+                        <button
+                          type="button"
+                          className="btn btn-primary"
+                          onClick={() =>
+                            history.push(
+                              `/employee/user/availablecredits/${id}/${
+                                plan.contract.split("#")[1]
+                              }`
+                            )
+                          }
+                        >
+                          Available Credits
                         </button>
                       </td>
                     </tr>

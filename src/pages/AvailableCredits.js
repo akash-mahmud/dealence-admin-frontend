@@ -4,18 +4,14 @@ import { useHistory, useParams } from "react-router-dom";
 import userServices from "../services/userServices";
 import Pagination from "@material-ui/lab/Pagination";
 
-function BalanceLogs() {
-  const { id } = useParams();
+function AvailableCredits() {
+  const { id, contract } = useParams();
   const history = useHistory();
   const AcessToken = localStorage.getItem("use");
-  const [plans, setPlans] = useState([]);
+  const [credits, setCredits] = useState([]);
 
   const getRequestParams = (page, pageSize) => {
     let params = {};
-
-    // if (searchTitle) {
-    //   params['title'] = searchTitle;
-    // }
 
     if (page) {
       params["page"] = page - 1;
@@ -42,24 +38,24 @@ function BalanceLogs() {
     }
   }, [history]);
 
-  const fetchBalanceLogs = () => {
+  const fetchAvailableCredits = () => {
     const params = getRequestParams(page, pageSize);
 
     userServices
-      .getAllBalanceLogs(params, id)
+      .getAllAvailableCredits(params, id, contract)
       .then((response) => {
         const { increment, totalPages } = response.data;
 
-        setPlans(increment);
+        setCredits(increment);
         setCount(totalPages);
       })
       .catch((e) => {});
   };
 
-  useEffect(fetchBalanceLogs, [page, pageSize]);
+  useEffect(fetchAvailableCredits, [page, pageSize]);
   const deleteData = async (id) => {
     const { data } = await axios.delete(
-      `/api/users/verified/balancelog/delete/${id}`,
+      `/api/users/verified/availablecredit/delete/${id}`,
       {
         headers: {
           authorization: "Bearer " + JSON.parse(AcessToken).token,
@@ -67,7 +63,7 @@ function BalanceLogs() {
       }
     );
     if (data === "success") {
-      fetchBalanceLogs();
+      fetchAvailableCredits();
     }
   };
   return (
@@ -78,9 +74,13 @@ function BalanceLogs() {
             <button
               type="button"
               className="btn btn-success"
-              onClick={() => history.push(`/employee/user/addbalancelog/${id}`)}
+              onClick={() =>
+                history.push(
+                  `/employee/user/addavailablecredit/${id}/${contract}`
+                )
+              }
             >
-              Add Balance Log
+              Add Available Credit
             </button>
             <button
               type="button"
@@ -96,24 +96,22 @@ function BalanceLogs() {
               <tr>
                 <th scope="col">Started At</th>
                 <th scope="col">Contract</th>
-                <th scope="col">Amount</th>
+                <th scope="col">Credit</th>
                 <th scope="col">Actions</th>
               </tr>
             </thead>
             <tbody>
-              {plans &&
-                plans.map((currentUser, index) => (
+              {credits &&
+                credits.map((credit, index) => (
                   <tr key={index}>
-                    <td>{`${new Date(
-                      currentUser.createdAt
-                    ).toDateString()}`}</td>
-                    <td>{currentUser.contract}</td>
-                    <td>{currentUser.balance}</td>
+                    <td>{`${new Date(credit.createdAt).toDateString()}`}</td>
+                    <td>{credit.contract}</td>
+                    <td>{credit.credit}</td>
                     <td>
                       <button
                         type="button"
                         className="btn btn-secondary me-2"
-                        onClick={() => deleteData(currentUser.id)}
+                        onClick={() => deleteData(credit.id)}
                       >
                         Remove
                       </button>
@@ -122,7 +120,7 @@ function BalanceLogs() {
                         className="btn btn-info"
                         onClick={() =>
                           history.push(
-                            `/employee/user/editbalancelog/${currentUser.userId}`
+                            `/employee/user/editavailablecredit/${credit.userId}/${contract}`
                           )
                         }
                       >
@@ -153,4 +151,4 @@ function BalanceLogs() {
   );
 }
 
-export default BalanceLogs;
+export default AvailableCredits;

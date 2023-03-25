@@ -21,6 +21,9 @@ import TotalPaids from "./pages/TotalPaids";
 import BalanceLogs from "./pages/BalanceLogs";
 import EditBalanceLog from "./pages/EditBalanceLog";
 import EditTotalPaid from "./pages/EditTotalPaid";
+import AvailableCredits from "./pages/AvailableCredits";
+import AddAvailableCredit from "./pages/AddAvailableCredit";
+import EditAvailableCredit from "./pages/EditAvailableCredit";
 function App() {
   return (
     <>
@@ -40,7 +43,7 @@ function App() {
         <Route exact={true} path="/employee/user/addtotalpaid/:id">
           <AddTotalPaid />
         </Route>
-        <Route exact={true} path="/employee/user/edittotalpaid/:id/:contruct">
+        <Route exact={true} path="/employee/user/edittotalpaid/:id/:contract">
           <EditTotalPaid />
         </Route>
         <Route exact={true} path="/employee/user/addbalancelog/:id">
@@ -51,6 +54,24 @@ function App() {
         </Route>
         <Route exact={true} path="/employee/user/balancelogs/:id">
           <BalanceLogs />
+        </Route>
+        <Route
+          exact={true}
+          path="/employee/user/availablecredits/:id/:contract"
+        >
+          <AvailableCredits />
+        </Route>
+        <Route
+          exact={true}
+          path="/employee/user/addavailablecredit/:id/:contract"
+        >
+          <AddAvailableCredit />
+        </Route>
+        <Route
+          exact={true}
+          path="/employee/user/editavailablecredit/:id/:contract"
+        >
+          <EditAvailableCredit />
         </Route>
         <Route exact={true} path="/employee/user/totalpaids/:id">
           <TotalPaids />

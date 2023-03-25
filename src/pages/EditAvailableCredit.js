@@ -4,8 +4,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useHistory, useParams } from "react-router-dom";
 import Alert from "@material-ui/lab/Alert";
-import { Select } from "@material-ui/core";
-function AddcreditHistoryLog() {
+function EditAvailableCredit() {
   const history = useHistory();
   const AcessToken = localStorage.getItem("use");
   useEffect(() => {
@@ -18,19 +17,17 @@ function AddcreditHistoryLog() {
   const [err, seterr] = useState(false);
   const [message, setmessage] = useState("");
   const [startDate, setStartDate] = useState(new Date());
-  const [credit, setCredit] = useState(0.0);
+  const [balance, setBalance] = useState(0.0);
   const { id, contract: planContract } = useParams();
-  const [contract, setcontract] = useState("");
-  const creditAddHandler = async (e) => {
+  const [contract, setcontract] = useState(planContract);
+  const updateHandler = async (e) => {
     e.preventDefault();
     const { data } = await axios.post(
-      `/api/user/availablecredit/create/${id}/${
-        contract ? contract : planContract
-      }`,
+      `/api/user/editavailablecredit/${id}`,
       {
         startDate,
-        credit,
-        contract,
+        balance,
+        contract: "#" + contract,
       },
       {
         headers: {
@@ -40,7 +37,7 @@ function AddcreditHistoryLog() {
     );
 
     if (data === "success") {
-      history.push(`/employee/users/plans/${id}`);
+      history.push(`/employee/user/balancelogs/${id}`);
     } else {
       seterr(true);
       setmessage(data);
@@ -92,10 +89,9 @@ function AddcreditHistoryLog() {
                 <input
                   type="number"
                   className="form-control"
-                  onChange={(e) => setCredit(e.target.value)}
+                  onChange={(e) => setBalance(e.target.value)}
                 />
               </div>
-
               <div className="col">
                 <label>Select Contract</label>
                 <select
@@ -103,12 +99,17 @@ function AddcreditHistoryLog() {
                   className="form-control"
                 >
                   <option value={undefined}>Select contract</option>
-                  {users?.contracts?.split(",")?.map((contract) => (
-                    <option value={contract}>{contract}</option>
+                  {users?.contracts?.split(",")?.map((contract, index) => (
+                    <option
+                      key={index}
+                      value={contract}
+                      selected={contract === "#" + planContract}
+                    >
+                      {contract}
+                    </option>
                   ))}
                 </select>
               </div>
-
               <div className="col">
                 <label>Select date</label>
                 <DatePicker
@@ -121,11 +122,11 @@ function AddcreditHistoryLog() {
               </div>
               <div className="col">
                 <button
-                  onClick={creditAddHandler}
+                  onClick={updateHandler}
                   type="button"
                   className="btn btn-primary mt-4"
                 >
-                  Add
+                  Update
                 </button>
                 <button
                   onClick={() => history.push(`/employee/users/update/${id}`)}
@@ -174,4 +175,4 @@ function AddcreditHistoryLog() {
   );
 }
 
-export default AddcreditHistoryLog;
+export default EditAvailableCredit;
