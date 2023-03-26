@@ -1,22 +1,21 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory, useLocation, useParams } from "react-router-dom";
 import userServices from "../services/userServices";
 import Pagination from "@material-ui/lab/Pagination";
 
 function BalanceLogs() {
   const { id } = useParams();
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+
+  const contract = searchParams.get("contract");
   const history = useHistory();
   const AcessToken = localStorage.getItem("use");
   const [plans, setPlans] = useState([]);
 
   const getRequestParams = (page, pageSize) => {
     let params = {};
-
-    // if (searchTitle) {
-    //   params['title'] = searchTitle;
-    // }
-
     if (page) {
       params["page"] = page - 1;
     }
@@ -95,7 +94,6 @@ function BalanceLogs() {
             <thead>
               <tr>
                 <th scope="col">Started At</th>
-                <th scope="col">Contract</th>
                 <th scope="col">Amount</th>
                 <th scope="col">Actions</th>
               </tr>
@@ -107,7 +105,6 @@ function BalanceLogs() {
                     <td>{`${new Date(
                       currentUser.createdAt
                     ).toDateString()}`}</td>
-                    <td>{currentUser.contract}</td>
                     <td>{currentUser.balance}</td>
                     <td>
                       <button

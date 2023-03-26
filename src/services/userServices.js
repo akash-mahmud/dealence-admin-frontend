@@ -35,6 +35,14 @@ const getAllPlans = (params, id) => {
   );
 };
 
+const getSinglePlan = (id, contract) => {
+  return http.get(`/users/verified/plan/${id}/${contract}`, {
+    headers: {
+      authorization: "Bearer " + JSON.parse(AcessToken).token,
+    },
+  });
+};
+
 const getAllBalanceLogs = (params, id) => {
   return http.get(`/users/verified/balancelogs/${id}`, {
     params,
@@ -68,6 +76,7 @@ const usersService = {
   getAllBalanceLogs,
   getTotalPaids,
   getAllAvailableCredits,
+  getSinglePlan,
 };
 
 export default usersService;

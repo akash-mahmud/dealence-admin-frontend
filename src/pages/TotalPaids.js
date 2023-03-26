@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory, useLocation, useParams } from "react-router-dom";
 import userServices from "../services/userServices";
 import Pagination from "@material-ui/lab/Pagination";
 
@@ -9,7 +9,10 @@ function TotalPaids() {
   const history = useHistory();
   const AcessToken = localStorage.getItem("use");
   const [plans, setPlans] = useState([]);
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
 
+  const contract = searchParams.get("contract");
   // useEffect(() => {
   // getUsers()
   // }, [])
@@ -93,7 +96,7 @@ function TotalPaids() {
             </button>
           </div>
 
-          <table class="table table-hover mt-4">
+          <table className="table table-hover mt-4">
             <thead>
               <tr>
                 <th scope="col">Started At</th>
@@ -105,38 +108,36 @@ function TotalPaids() {
             <tbody>
               {plans &&
                 plans.map((currentUser, index) => (
-                  <>
-                    <tr>
-                      <td>{`${new Date(
-                        currentUser.createdAt
-                      ).toDateString()}`}</td>
-                      <td>{currentUser.contract}</td>
-                      <td>{currentUser.totalPaid}</td>
+                  <tr key={index}>
+                    <td>{`${new Date(
+                      currentUser.createdAt
+                    ).toDateString()}`}</td>
+                    <td>{currentUser.contract}</td>
+                    <td>{currentUser.totalPaid}</td>
 
-                      <td>
-                        <button
-                          type="button"
-                          className="btn btn-secondary me-2"
-                          onClick={() => deleteData(currentUser.id)}
-                        >
-                          Remove
-                        </button>
-                        <button
-                          type="button"
-                          className="btn btn-info"
-                          onClick={() =>
-                            history.push(
-                              `/employee/user/edittotalpaid/${
-                                currentUser.userId
-                              }/${currentUser.contract.split("#")[1]}`
-                            )
-                          }
-                        >
-                          Update
-                        </button>
-                      </td>
-                    </tr>
-                  </>
+                    <td>
+                      <button
+                        type="button"
+                        className="btn btn-secondary me-2"
+                        onClick={() => deleteData(currentUser.id)}
+                      >
+                        Remove
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn-info"
+                        onClick={() =>
+                          history.push(
+                            `/employee/user/edittotalpaid/${
+                              currentUser.userId
+                            }/${currentUser.contract.split("#")[1]}`
+                          )
+                        }
+                      >
+                        Update
+                      </button>
+                    </td>
+                  </tr>
                 ))}
             </tbody>
           </table>

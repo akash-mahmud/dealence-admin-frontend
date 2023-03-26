@@ -40,10 +40,11 @@ function App() {
         <Route exact={true} path="/employee/user/addplan/:id">
           <AddPlan />
         </Route>
+
         <Route exact={true} path="/employee/user/addtotalpaid/:id">
           <AddTotalPaid />
         </Route>
-        <Route exact={true} path="/employee/user/edittotalpaid/:id/:contract">
+        <Route exact={true} path="/employee/user/edittotalpaid/:id/:contract?">
           <EditTotalPaid />
         </Route>
         <Route exact={true} path="/employee/user/addbalancelog/:id">
@@ -52,12 +53,12 @@ function App() {
         <Route exact={true} path="/employee/user/addplan/:id">
           <AddPlan />
         </Route>
-        <Route exact={true} path="/employee/user/balancelogs/:id">
+        <Route exact={true} path="/employee/user/balancelogs/:id/:contract?">
           <BalanceLogs />
         </Route>
         <Route
           exact={true}
-          path="/employee/user/availablecredits/:id/:contract"
+          path="/employee/user/availablecredits/:id/:contract?"
         >
           <AvailableCredits />
         </Route>
@@ -73,12 +74,12 @@ function App() {
         >
           <EditAvailableCredit />
         </Route>
-        <Route exact={true} path="/employee/user/totalpaids/:id">
+        <Route exact={true} path="/employee/user/totalpaids/:id/:contract?">
           <TotalPaids />
         </Route>
         <Route
           exact={true}
-          path="/employee/user/editplan/:id/:increamentId/:contract"
+          path="/employee/user/editplan/:id/:increamentId/:contract?"
         >
           <EditPlan />
         </Route>

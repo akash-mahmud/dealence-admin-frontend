@@ -86,7 +86,7 @@ function Plans() {
             </button>
           </div>
 
-          <table class="table table-hover mt-4">
+          <table className="table table-hover mt-4">
             <thead>
               <tr>
                 <th scope="col">Started At</th>
@@ -98,67 +98,69 @@ function Plans() {
             <tbody>
               {plans &&
                 plans.map((plan, index) => (
-                  <>
-                    <tr>
-                      <td>{`${new Date(plan.createdAt).toDateString()}`}</td>
-                      <td>{plan.plan}</td>
-                      <td>{plan.principal}</td>
+                  <tr key={index}>
+                    <td>{`${new Date(plan.createdAt).toDateString()}`}</td>
+                    <td>{plan.plan}</td>
+                    <td>{plan.principal}</td>
 
-                      <td>
-                        <button
-                          type="button"
-                          className="btn btn-secondary me-2"
-                          onClick={() => deleteData(plan.id)}
-                        >
-                          Remove
-                        </button>
-                        <button
-                          type="button"
-                          className="btn btn-info"
-                          onClick={() =>
-                            history.push(
-                              `/employee/user/editplan/${plan.userId}/${
-                                plan.id
-                              }/${plan.contract.split("#")[1]}`
-                            )
-                          }
-                        >
-                          Update
-                        </button>
-                        <button
-                          type="button"
-                          className="btn btn-success mx-2"
-                          onClick={() =>
-                            history.push(`/employee/user/balancelogs/${id}`)
-                          }
-                        >
-                          All Balance Log
-                        </button>
-                        <button
-                          type="button"
-                          className="btn btn-info me-2"
-                          onClick={() =>
-                            history.push(`/employee/user/totalpaids/${id}`)
-                          }
-                        >
-                          Total Paids
-                        </button>
-                        <button
-                          type="button"
-                          className="btn btn-primary"
-                          onClick={() =>
-                            history.push(
-                              `/employee/user/availablecredits/${id}/${
-                                plan.contract.split("#")[1]
-                              }`
-                            )
-                          }
-                        >
-                          Available Credits
-                        </button>
-                      </td>
-                    </tr>
-                  </>
+                    <td>
+                      <button
+                        type="button"
+                        className="btn btn-secondary me-2"
+                        onClick={() => deleteData(plan.id)}
+                      >
+                        Remove
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn-info"
+                        onClick={() =>
+                          history.push({
+                            pathname: `/employee/user/editplan/${plan.userId}/${plan.id}`,
+                            search: `?contract=${plan.contract}`,
+                          })
+                        }
+                      >
+                        Update
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn-success mx-2"
+                        onClick={() =>
+                          history.push({
+                            pathname: `/employee/user/balancelogs/${id}`,
+                            search: `?contract=${plan.contract}`,
+                          })
+                        }
+                      >
+                        All Balance Log
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn-info me-2"
+                        onClick={() =>
+                          history.push({
+                            pathname: `/employee/user/totalpaids/${id}`,
+                            search: `?contract=${plan.contract}`,
+                          })
+                        }
+                      >
+                        Total Paids
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn-primary"
+                        onClick={() =>
+                          history.push({
+                            pathname: `/employee/user/availablecredits/${id}`,
+                            search: `?contract=${plan.contract}`,
+                          })
+                        }
+                      >
+                        Available Credits
+                      </button>
+                    </td>
+                  </tr>
                 ))}
             </tbody>
           </table>
