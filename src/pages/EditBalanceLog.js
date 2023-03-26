@@ -28,11 +28,10 @@ function EditBalanceLog() {
   const updateHandler = async (e) => {
     e.preventDefault();
     const { data } = await axios.post(
-      `/api/user/editbalancelog/${id}`,
+      `/api/user/editbalancelog/${balanceId}`,
       {
         startDate,
         balance,
-        contract,
       },
       {
         headers: {
@@ -73,7 +72,7 @@ function EditBalanceLog() {
                 <input
                   type="number"
                   className="form-control"
-                  defaultValue={balanceData.balance}
+                  defaultValue={balanceData?.balance}
                   onChange={(e) => setBalance(e.target.value)}
                 />
               </div>

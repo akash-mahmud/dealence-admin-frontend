@@ -2,10 +2,12 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory, useLocation, useParams } from "react-router-dom";
 import Alert from "@material-ui/lab/Alert";
 function EditTotalPaid() {
   const history = useHistory();
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
   const AcessToken = localStorage.getItem("use");
   useEffect(() => {
     const data = localStorage.getItem("use");
@@ -18,12 +20,13 @@ function EditTotalPaid() {
   const [message, setmessage] = useState("");
   const [startDate, setStartDate] = useState(new Date());
   const [totalPaid, setTotalPaid] = useState(0.0);
-  const { id } = useParams();
-  const [contract, setcontract] = useState("");
+  const [totalPaidData, setTotalPaidData] = useState(undefined);
+  const { id, totalpaidId } = useParams();
+  const [contract, setcontract] = useState(searchParams.get("contract"));
   const updateHandler = async (e) => {
     e.preventDefault();
     const { data } = await axios.post(
-      `/api/user/edittotalpaid/${id}`,
+      `/api/user/edittotalpaid/${totalpaidId}`,
       {
         startDate,
         totalPaid,
@@ -43,40 +46,20 @@ function EditTotalPaid() {
       setmessage(data);
     }
   };
-  const [users, setUsers] = useState({});
-  const getUser = async () => {
-    const { data } = await axios.get(`/api/users/verified/${id}`, {
+
+  const getSingleTotalPaid = async () => {
+    const url = `/api/users/verified/totalpaid/${totalpaidId}`;
+
+    const { data } = await axios.get(url, {
       headers: {
         authorization: "Bearer " + JSON.parse(AcessToken).token,
       },
     });
-    const {
-      first_name,
-      last_name,
-      email,
-      phone_number,
-      address,
-      city,
-      state,
-      zip,
-      country,
-      contracts,
-    } = data[0];
-    setUsers({
-      first_name,
-      last_name,
-      email,
-      phone_number,
-      address,
-      city,
-      state,
-      zip,
-      country,
-      contracts,
-    });
+    setTotalPaidData(data);
   };
+
   useEffect(() => {
-    getUser();
+    getSingleTotalPaid();
   }, []);
   return (
     <>
@@ -89,10 +72,11 @@ function EditTotalPaid() {
                 <input
                   type="number"
                   className="form-control"
+                  defaultValue={totalPaidData?.totalPaid}
                   onChange={(e) => setTotalPaid(e.target.value)}
                 />
               </div>
-              <div className="col">
+              {/* <div className="col">
                 <label>Select Contract</label>
                 <select
                   onChange={(e) => setcontract(e.target.value)}
@@ -103,7 +87,7 @@ function EditTotalPaid() {
                     <option value={contract}>{contract}</option>
                   ))}
                 </select>
-              </div>
+              </div> */}
               <div className="col">
                 <label>Select date</label>
                 <DatePicker

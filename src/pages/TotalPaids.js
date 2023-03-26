@@ -8,7 +8,7 @@ function TotalPaids() {
   const { id } = useParams();
   const history = useHistory();
   const AcessToken = localStorage.getItem("use");
-  const [plans, setPlans] = useState([]);
+  const [totalPaids, setTotalPaids] = useState([]);
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
 
@@ -55,7 +55,7 @@ function TotalPaids() {
       .then((response) => {
         const { increment, totalPages } = response.data;
 
-        setPlans(increment);
+        setTotalPaids(increment);
         setCount(totalPages);
       })
       .catch((e) => {});
@@ -106,20 +106,18 @@ function TotalPaids() {
               </tr>
             </thead>
             <tbody>
-              {plans &&
-                plans.map((currentUser, index) => (
+              {totalPaids &&
+                totalPaids.map((totalPaid, index) => (
                   <tr key={index}>
-                    <td>{`${new Date(
-                      currentUser.createdAt
-                    ).toDateString()}`}</td>
-                    <td>{currentUser.contract}</td>
-                    <td>{currentUser.totalPaid}</td>
+                    <td>{`${new Date(totalPaid.createdAt).toDateString()}`}</td>
+                    <td>{totalPaid.contract}</td>
+                    <td>{totalPaid.totalPaid}</td>
 
                     <td>
                       <button
                         type="button"
                         className="btn btn-secondary me-2"
-                        onClick={() => deleteData(currentUser.id)}
+                        onClick={() => deleteData(totalPaid.id)}
                       >
                         Remove
                       </button>
@@ -127,11 +125,10 @@ function TotalPaids() {
                         type="button"
                         className="btn btn-info"
                         onClick={() =>
-                          history.push(
-                            `/employee/user/edittotalpaid/${
-                              currentUser.userId
-                            }/${currentUser.contract.split("#")[1]}`
-                          )
+                          history.push({
+                            pathname: `/employee/user/edittotalpaid/${totalPaid.userId}/${totalPaid.id}`,
+                            search: `?contract=${contract}`,
+                          })
                         }
                       >
                         Update
