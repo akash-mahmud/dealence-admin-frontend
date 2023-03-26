@@ -47,7 +47,10 @@ function App() {
         <Route exact={true} path="/employee/user/addtotalpaid/:id">
           <AddTotalPaid />
         </Route>
-        <Route exact={true} path="/employee/user/edittotalpaid/:id/:contract?">
+        <Route
+          exact={true}
+          path="/employee/user/edittotalpaid/:id/:totalpaidId/:contract?"
+        >
           <EditTotalPaid />
         </Route>
         {/* Route for Balance Log */}
@@ -78,7 +81,7 @@ function App() {
         </Route>
         <Route
           exact={true}
-          path="/employee/user/editavailablecredit/:id/:contract"
+          path="/employee/user/editavailablecredit/:id/:contract?"
         >
           <EditAvailableCredit />
         </Route>
