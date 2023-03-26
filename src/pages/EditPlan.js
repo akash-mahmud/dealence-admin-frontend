@@ -13,7 +13,7 @@ function EditPlan() {
   const [plan, setplan] = useState("BIMONTHLY");
   const [contract, setcontract] = useState("");
   const [amount, setamount] = useState(0.0);
-  const { id, increamentId, contract: userContract } = useParams();
+  const { id, increamentId, contract: urlContract } = useParams();
   const history = useHistory();
   const [users, setUsers] = useState({});
   const getUser = async () => {

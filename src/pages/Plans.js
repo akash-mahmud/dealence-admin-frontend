@@ -117,9 +117,7 @@ function Plans() {
                           className="btn btn-info"
                           onClick={() =>
                             history.push(
-                              `/employee/user/editplan/${plan.userId}/${
-                                plan.id
-                              }/${plan.contract.split("#")[1]}`
+                              `/employee/user/editplan/${plan.userId}/${plan.id}/contract/?contractId=${plan.contract}`
                             )
                           }
                         >

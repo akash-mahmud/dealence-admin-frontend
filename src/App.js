@@ -78,7 +78,7 @@ function App() {
         </Route>
         <Route
           exact={true}
-          path="/employee/user/editplan/:id/:increamentId/:contract"
+          path="/employee/user/editplan/:id/:increamentId/contract"
         >
           <EditPlan />
         </Route>
