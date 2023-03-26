@@ -14,22 +14,23 @@ function EditPlan() {
   const [message, setmessage] = useState("");
   const [startDate, setStartDate] = useState(new Date());
   const [plan, setplan] = useState("BIMONTHLY");
+  const [planData, setPlanData] = useState(undefined);
   const [contract, setcontract] = useState(searchParams.get("contract"));
   const [amount, setamount] = useState(0.0);
-  const { id, increamentId, contract: userContract } = useParams();
+  const { id, increamentId } = useParams();
   const history = useHistory();
   const [users, setUsers] = useState({});
 
   const getPlan = async () => {
     const { data } = await axios.get(
-      `/api/users/verified/plan/${id}/${contract}`,
+      `/api/users/verified/plan/${id}/${increamentId}`,
       {
         headers: {
           authorization: "Bearer " + JSON.parse(AcessToken).token,
         },
       }
     );
-    console.log(data);
+    setPlanData(data);
   };
   const getUser = async () => {
     const { data } = await axios.get(`/api/users/verified/${id}`, {
@@ -112,6 +113,7 @@ function EditPlan() {
                 <input
                   type="number"
                   className="form-control"
+                  defaultValue={planData?.principal}
                   onChange={(e) => setamount(e.target.value)}
                 />
               </div>
@@ -139,8 +141,18 @@ function EditPlan() {
                   onChange={(e) => setplan(e.target.value)}
                   className="form-control"
                 >
-                  <option value={"BIMONTHLY"}>BIMONTHLY</option>
-                  <option value={"SEMIANNUAL"}>SEMIANNUAL</option>
+                  <option
+                    value={"BIMONTHLY"}
+                    selected={planData?.plan === "BIMONTHLY"}
+                  >
+                    BIMONTHLY
+                  </option>
+                  <option
+                    value={"SEMIANNUAL"}
+                    selected={planData?.plan === "SEMIANNUAL"}
+                  >
+                    SEMIANNUAL
+                  </option>
                 </select>
               </div>
 

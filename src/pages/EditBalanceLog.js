@@ -2,11 +2,15 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory, useLocation, useParams } from "react-router-dom";
 import Alert from "@material-ui/lab/Alert";
 function EditBalanceLog() {
   const history = useHistory();
   const AcessToken = localStorage.getItem("use");
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const contract = searchParams.get("contract");
+
   useEffect(() => {
     const data = localStorage.getItem("use");
 
@@ -18,8 +22,9 @@ function EditBalanceLog() {
   const [message, setmessage] = useState("");
   const [startDate, setStartDate] = useState(new Date());
   const [balance, setBalance] = useState(0.0);
-  const { id } = useParams();
-  const [contract, setcontract] = useState("");
+  const [balanceData, setBalanceData] = useState(undefined);
+  const { id, balanceId } = useParams();
+
   const updateHandler = async (e) => {
     e.preventDefault();
     const { data } = await axios.post(
@@ -43,40 +48,19 @@ function EditBalanceLog() {
       setmessage(data);
     }
   };
-  const [users, setUsers] = useState({});
-  const getUser = async () => {
-    const { data } = await axios.get(`/api/users/verified/${id}`, {
+  const getSingleBalancePlan = async () => {
+    const url = `/api/users/verified/planbalance/${balanceId}`;
+    console.log(url);
+    const { data } = await axios.get(url, {
       headers: {
         authorization: "Bearer " + JSON.parse(AcessToken).token,
       },
     });
-    const {
-      first_name,
-      last_name,
-      email,
-      phone_number,
-      address,
-      city,
-      state,
-      zip,
-      country,
-      contracts,
-    } = data[0];
-    setUsers({
-      first_name,
-      last_name,
-      email,
-      phone_number,
-      address,
-      city,
-      state,
-      zip,
-      country,
-      contracts,
-    });
+    console.log(data);
+    setBalanceData(data);
   };
   useEffect(() => {
-    getUser();
+    getSingleBalancePlan();
   }, []);
   return (
     <>
@@ -89,21 +73,24 @@ function EditBalanceLog() {
                 <input
                   type="number"
                   className="form-control"
+                  defaultValue={balanceData.balance}
                   onChange={(e) => setBalance(e.target.value)}
                 />
               </div>
-              <div className="col">
+              {/* <div className="col">
                 <label>Select Contract</label>
                 <select
                   onChange={(e) => setcontract(e.target.value)}
                   className="form-control"
                 >
                   <option value={undefined}>Select contract</option>
-                  {users?.contracts?.split(",")?.map((contract) => (
-                    <option value={contract}>{contract}</option>
+                  {users?.contracts?.split(",")?.map((contract, index) => (
+                    <option key={index} value={contract}>
+                      {contract}
+                    </option>
                   ))}
                 </select>
-              </div>
+              </div> */}
               <div className="col">
                 <label>Select date</label>
                 <DatePicker

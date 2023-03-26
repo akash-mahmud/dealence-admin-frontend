@@ -100,17 +100,15 @@ function BalanceLogs() {
             </thead>
             <tbody>
               {plans &&
-                plans.map((currentUser, index) => (
+                plans.map((balance, index) => (
                   <tr key={index}>
-                    <td>{`${new Date(
-                      currentUser.createdAt
-                    ).toDateString()}`}</td>
-                    <td>{currentUser.balance}</td>
+                    <td>{`${new Date(balance.createdAt).toDateString()}`}</td>
+                    <td>{balance.balance}</td>
                     <td>
                       <button
                         type="button"
                         className="btn btn-secondary me-2"
-                        onClick={() => deleteData(currentUser.id)}
+                        onClick={() => deleteData(balance.id)}
                       >
                         Remove
                       </button>
@@ -118,9 +116,10 @@ function BalanceLogs() {
                         type="button"
                         className="btn btn-info"
                         onClick={() =>
-                          history.push(
-                            `/employee/user/editbalancelog/${currentUser.userId}`
-                          )
+                          history.push({
+                            pathname: `/employee/user/editbalancelog/${balance.userId}/${balance.id}`,
+                            search: `?contract=${contract}`,
+                          })
                         }
                       >
                         Update
