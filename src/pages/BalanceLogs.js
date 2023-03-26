@@ -1,22 +1,21 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory, useLocation, useParams } from "react-router-dom";
 import userServices from "../services/userServices";
 import Pagination from "@material-ui/lab/Pagination";
 
 function BalanceLogs() {
   const { id } = useParams();
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+
+  const contract = searchParams.get("contract");
   const history = useHistory();
   const AcessToken = localStorage.getItem("use");
   const [plans, setPlans] = useState([]);
 
   const getRequestParams = (page, pageSize) => {
     let params = {};
-
-    // if (searchTitle) {
-    //   params['title'] = searchTitle;
-    // }
-
     if (page) {
       params["page"] = page - 1;
     }
@@ -95,25 +94,21 @@ function BalanceLogs() {
             <thead>
               <tr>
                 <th scope="col">Started At</th>
-                <th scope="col">Contract</th>
                 <th scope="col">Amount</th>
                 <th scope="col">Actions</th>
               </tr>
             </thead>
             <tbody>
               {plans &&
-                plans.map((currentUser, index) => (
+                plans.map((balance, index) => (
                   <tr key={index}>
-                    <td>{`${new Date(
-                      currentUser.createdAt
-                    ).toDateString()}`}</td>
-                    <td>{currentUser.contract}</td>
-                    <td>{currentUser.balance}</td>
+                    <td>{`${new Date(balance.createdAt).toDateString()}`}</td>
+                    <td>{balance.balance}</td>
                     <td>
                       <button
                         type="button"
                         className="btn btn-secondary me-2"
-                        onClick={() => deleteData(currentUser.id)}
+                        onClick={() => deleteData(balance.id)}
                       >
                         Remove
                       </button>
@@ -121,9 +116,10 @@ function BalanceLogs() {
                         type="button"
                         className="btn btn-info"
                         onClick={() =>
-                          history.push(
-                            `/employee/user/editbalancelog/${currentUser.userId}`
-                          )
+                          history.push({
+                            pathname: `/employee/user/editbalancelog/${balance.userId}/${balance.id}`,
+                            search: `?contract=${contract}`,
+                          })
                         }
                       >
                         Update

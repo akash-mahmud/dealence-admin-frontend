@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory, useLocation, useParams } from "react-router-dom";
 import userServices from "../services/userServices";
 import Pagination from "@material-ui/lab/Pagination";
 
 function AvailableCredits() {
-  const { id, contract } = useParams();
+  const { id } = useParams();
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+
+  const contract = searchParams.get("contract");
   const history = useHistory();
   const AcessToken = localStorage.getItem("use");
   const [credits, setCredits] = useState([]);

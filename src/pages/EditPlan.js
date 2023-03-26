@@ -2,20 +2,36 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory, useLocation, useParams } from "react-router-dom";
 import Alert from "@material-ui/lab/Alert";
 function EditPlan() {
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+
   const AcessToken = localStorage.getItem("use");
 
   const [err, seterr] = useState(false);
   const [message, setmessage] = useState("");
   const [startDate, setStartDate] = useState(new Date());
   const [plan, setplan] = useState("BIMONTHLY");
-  const [contract, setcontract] = useState("");
+  const [planData, setPlanData] = useState(undefined);
+  const [contract, setcontract] = useState(searchParams.get("contract"));
   const [amount, setamount] = useState(0.0);
-  const { id, increamentId, contract: urlContract } = useParams();
+  const { id, increamentId } = useParams();
   const history = useHistory();
   const [users, setUsers] = useState({});
+
+  const getPlan = async () => {
+    const { data } = await axios.get(
+      `/api/users/verified/plan/${id}/${increamentId}`,
+      {
+        headers: {
+          authorization: "Bearer " + JSON.parse(AcessToken).token,
+        },
+      }
+    );
+    setPlanData(data);
+  };
   const getUser = async () => {
     const { data } = await axios.get(`/api/users/verified/${id}`, {
       headers: {
@@ -49,9 +65,9 @@ function EditPlan() {
   };
   useEffect(() => {
     getUser();
+    getPlan();
   }, []);
 
-  console.log(users);
   useEffect(() => {
     const data = localStorage.getItem("use");
 
@@ -97,6 +113,7 @@ function EditPlan() {
                 <input
                   type="number"
                   className="form-control"
+                  defaultValue={planData?.principal}
                   onChange={(e) => setamount(e.target.value)}
                 />
               </div>
@@ -107,9 +124,13 @@ function EditPlan() {
                   className="form-control"
                 >
                   <option value={undefined}>Select contract</option>
-                  {users?.contracts?.split(",")?.map((contract, index) => (
-                    <option key={index} value={contract}>
-                      {contract}
+                  {users?.contracts?.split(",")?.map((CONTRACT, index) => (
+                    <option
+                      key={index}
+                      value={CONTRACT}
+                      selected={contract === CONTRACT}
+                    >
+                      {CONTRACT}
                     </option>
                   ))}
                 </select>
@@ -120,8 +141,18 @@ function EditPlan() {
                   onChange={(e) => setplan(e.target.value)}
                   className="form-control"
                 >
-                  <option value={"BIMONTHLY"}>BIMONTHLY</option>
-                  <option value={"SEMIANNUAL"}>SEMIANNUAL</option>
+                  <option
+                    value={"BIMONTHLY"}
+                    selected={planData?.plan === "BIMONTHLY"}
+                  >
+                    BIMONTHLY
+                  </option>
+                  <option
+                    value={"SEMIANNUAL"}
+                    selected={planData?.plan === "SEMIANNUAL"}
+                  >
+                    SEMIANNUAL
+                  </option>
                 </select>
               </div>
 
@@ -132,11 +163,6 @@ function EditPlan() {
                   selected={startDate}
                   onChange={(date) => {
                     setStartDate(date);
-                    //
-                    //
-                    //
-                    //
-                    //
                   }}
                 />
               </div>
