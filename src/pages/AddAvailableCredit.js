@@ -24,9 +24,7 @@ function AddcreditHistoryLog() {
   const creditAddHandler = async (e) => {
     e.preventDefault();
     const { data } = await axios.post(
-      `/api/user/availablecredit/create/${id}/${
-        contract ? contract : planContract
-      }`,
+      `/api/user/availablecredit/create/${id}`,
       {
         startDate,
         credit,

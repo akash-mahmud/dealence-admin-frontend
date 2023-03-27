@@ -53,8 +53,8 @@ const getTotalPaids = (params, id) => {
   });
 };
 
-const getAllAvailableCredits = (params, id, contract) => {
-  return http.get(`/users/verified/availablecredits/${id}/${contract}`, {
+const getAllAvailableCredits = (params, id) => {
+  return http.get(`/users/verified/availablecredits/${id}`, {
     params,
     headers: {
       authorization: "Bearer " + JSON.parse(AcessToken).token,
