@@ -1,25 +1,21 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory, useLocation, useParams } from "react-router-dom";
 import userServices from "../services/userServices";
 import Pagination from "@material-ui/lab/Pagination";
 
-function Plans() {
+function AvailableCredits() {
   const { id } = useParams();
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+
+  const contract = searchParams.get("contract");
   const history = useHistory();
   const AcessToken = localStorage.getItem("use");
-  const [plans, setPlans] = useState([]);
-
-  // useEffect(() => {
-  // getUsers()
-  // }, [])
+  const [credits, setCredits] = useState([]);
 
   const getRequestParams = (page, pageSize) => {
     let params = {};
-
-    // if (searchTitle) {
-    //   params['title'] = searchTitle;
-    // }
 
     if (page) {
       params["page"] = page - 1;
@@ -37,6 +33,7 @@ function Plans() {
   const [page, setPage] = useState(1);
   const [count, setCount] = useState(0);
   const [pageSize, setPageSize] = useState(10);
+
   useEffect(() => {
     const data = localStorage.getItem("use");
 
@@ -44,24 +41,25 @@ function Plans() {
       history.push("/employee/login");
     }
   }, [history]);
-  const retrieveTutorials = () => {
+
+  const fetchAvailableCredits = () => {
     const params = getRequestParams(page, pageSize);
 
     userServices
-      .getAllPlans(params, id)
+      .getAllAvailableCredits(params, id)
       .then((response) => {
         const { increment, totalPages } = response.data;
 
-        setPlans(increment);
+        setCredits(increment);
         setCount(totalPages);
       })
       .catch((e) => {});
   };
 
-  useEffect(retrieveTutorials, [page, pageSize]);
+  useEffect(fetchAvailableCredits, [page, pageSize]);
   const deleteData = async (id) => {
     const { data } = await axios.delete(
-      `/api/users/verified/plan/delete/${id}`,
+      `/api/users/verified/availablecredit/delete/${id}`,
       {
         headers: {
           authorization: "Bearer " + JSON.parse(AcessToken).token,
@@ -69,7 +67,7 @@ function Plans() {
       }
     );
     if (data === "success") {
-      retrieveTutorials();
+      fetchAvailableCredits();
     }
   };
   return (
@@ -79,8 +77,19 @@ function Plans() {
           <div className="col-md-2 col-lg-12">
             <button
               type="button"
+              className="btn btn-success"
+              onClick={() =>
+                history.push(
+                  `/employee/user/addavailablecredit/${id}/${contract}`
+                )
+              }
+            >
+              Add Available Credit
+            </button>
+            <button
+              type="button"
               className="btn btn-danger ms-2"
-              onClick={() => history.push(`/employee/users/update/${id}`)}
+              onClick={() => history.push(`/employee/users/plans/${id}`)}
             >
               Back
             </button>
@@ -90,24 +99,23 @@ function Plans() {
             <thead>
               <tr>
                 <th scope="col">Started At</th>
-                <th scope="col">Plan Type</th>
-                <th scope="col">Amount</th>
+                <th scope="col">Contract</th>
+                <th scope="col">Credit</th>
                 <th scope="col">Actions</th>
               </tr>
             </thead>
             <tbody>
-              {plans &&
-                plans.map((plan, index) => (
+              {credits &&
+                credits.map((credit, index) => (
                   <tr key={index}>
-                    <td>{`${new Date(plan.createdAt).toDateString()}`}</td>
-                    <td>{plan.plan}</td>
-                    <td>{plan.principal}</td>
-
+                    <td>{`${new Date(credit.createdAt).toDateString()}`}</td>
+                    <td>{credit.contract}</td>
+                    <td>{credit.credit}</td>
                     <td>
                       <button
                         type="button"
                         className="btn btn-secondary me-2"
-                        onClick={() => deleteData(plan.id)}
+                        onClick={() => deleteData(credit.id)}
                       >
                         Remove
                       </button>
@@ -115,49 +123,12 @@ function Plans() {
                         type="button"
                         className="btn btn-info"
                         onClick={() =>
-                          history.push({
-                            pathname: `/employee/user/editplan/${plan.userId}/${plan.id}`,
-                            search: `?contract=${plan.contract}`,
-                          })
+                          history.push(
+                            `/employee/user/editavailablecredit/${credit.userId}/${contract}`
+                          )
                         }
                       >
                         Update
-                      </button>
-                      <button
-                        type="button"
-                        className="btn btn-success mx-2"
-                        onClick={() =>
-                          history.push({
-                            pathname: `/employee/user/balancelogs/${id}`,
-                            search: `?contract=${plan.contract}`,
-                          })
-                        }
-                      >
-                        All Balance Log
-                      </button>
-                      <button
-                        type="button"
-                        className="btn btn-info me-2"
-                        onClick={() =>
-                          history.push({
-                            pathname: `/employee/user/totalpaids/${id}`,
-                            search: `?contract=${plan.contract}`,
-                          })
-                        }
-                      >
-                        Total Paids
-                      </button>
-                      <button
-                        type="button"
-                        className="btn btn-primary"
-                        onClick={() =>
-                          history.push({
-                            pathname: `/employee/user/availablecredits/${id}`,
-                            search: `?contract=${plan.contract}`,
-                          })
-                        }
-                      >
-                        Available Credits
                       </button>
                     </td>
                   </tr>
@@ -184,4 +155,4 @@ function Plans() {
   );
 }
 
-export default Plans;
+export default AvailableCredits;

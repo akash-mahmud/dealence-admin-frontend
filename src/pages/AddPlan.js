@@ -4,7 +4,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useHistory, useParams } from "react-router-dom";
 import Alert from "@material-ui/lab/Alert";
-import {Select} from "@material-ui/core";
+import { Select } from "@material-ui/core";
 function AddPlan() {
   const history = useHistory();
   const AcessToken = localStorage.getItem("use");

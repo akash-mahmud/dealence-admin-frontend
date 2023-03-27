@@ -2,49 +2,36 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory, useLocation, useParams } from "react-router-dom";
 import Alert from "@material-ui/lab/Alert";
-import { Select } from "@material-ui/core";
-function AddcreditHistoryLog() {
-  const history = useHistory();
-  const AcessToken = localStorage.getItem("use");
-  useEffect(() => {
-    const data = localStorage.getItem("use");
+function EditPlan() {
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
 
-    if (!data) {
-      history.push("/employee/login");
-    }
-  }, [history]);
+  const AcessToken = localStorage.getItem("use");
+
   const [err, seterr] = useState(false);
   const [message, setmessage] = useState("");
   const [startDate, setStartDate] = useState(new Date());
-  const [credit, setCredit] = useState(0.0);
-  const { id, contract: planContract } = useParams();
-  const [contract, setcontract] = useState("");
-  const creditAddHandler = async (e) => {
-    e.preventDefault();
-    const { data } = await axios.post(
-      `/api/user/availablecredit/create/${id}`,
-      {
-        startDate,
-        credit,
-        contract,
-      },
+  const [plan, setplan] = useState("BIMONTHLY");
+  const [planData, setPlanData] = useState(undefined);
+  const [contract, setcontract] = useState(searchParams.get("contract"));
+  const [amount, setamount] = useState(0.0);
+  const { id, increamentId } = useParams();
+  const history = useHistory();
+  const [users, setUsers] = useState({});
+
+  const getPlan = async () => {
+    const { data } = await axios.get(
+      `/api/users/verified/plan/${id}/${increamentId}`,
       {
         headers: {
           authorization: "Bearer " + JSON.parse(AcessToken).token,
         },
       }
     );
-
-    if (data === "success") {
-      history.push(`/employee/users/plans/${id}`);
-    } else {
-      seterr(true);
-      setmessage(data);
-    }
+    setPlanData(data);
   };
-  const [users, setUsers] = useState({});
   const getUser = async () => {
     const { data } = await axios.get(`/api/users/verified/${id}`, {
       headers: {
@@ -78,7 +65,43 @@ function AddcreditHistoryLog() {
   };
   useEffect(() => {
     getUser();
+    getPlan();
   }, []);
+
+  useEffect(() => {
+    const data = localStorage.getItem("use");
+
+    if (!data) {
+      history.push("/employee/login");
+    }
+  }, [history]);
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    const { data } = await axios.post(
+      `/api/user/editPlan/${id}/${increamentId}`,
+      {
+        startDate,
+        amount,
+        plan,
+        contract,
+      },
+      {
+        headers: {
+          authorization: "Bearer " + JSON.parse(AcessToken).token,
+        },
+      }
+    );
+
+    if (data === "success") {
+      seterr(false);
+      setmessage("");
+      history.push(`/employee/user/plans/${id}`);
+    } else {
+      seterr(true);
+      setmessage(data);
+    }
+  };
+
   return (
     <>
       <div className="container">
@@ -86,14 +109,14 @@ function AddcreditHistoryLog() {
           <form className="mt-4">
             <div className="row">
               <div className="col">
-                <label>Credit</label>
+                <label>Amount</label>
                 <input
                   type="number"
                   className="form-control"
-                  onChange={(e) => setCredit(e.target.value)}
+                  defaultValue={planData?.principal}
+                  onChange={(e) => setamount(e.target.value)}
                 />
               </div>
-
               <div className="col">
                 <label>Select Contract</label>
                 <select
@@ -101,9 +124,35 @@ function AddcreditHistoryLog() {
                   className="form-control"
                 >
                   <option value={undefined}>Select contract</option>
-                  {users?.contracts?.split(",")?.map((contract) => (
-                    <option value={contract}>{contract}</option>
+                  {users?.contracts?.split(",")?.map((CONTRACT, index) => (
+                    <option
+                      key={index}
+                      value={CONTRACT}
+                      selected={contract === CONTRACT}
+                    >
+                      {CONTRACT}
+                    </option>
                   ))}
+                </select>
+              </div>
+              <div className="col">
+                <label>Select Plan</label>
+                <select
+                  onChange={(e) => setplan(e.target.value)}
+                  className="form-control"
+                >
+                  <option
+                    value={"BIMONTHLY"}
+                    selected={planData?.plan === "BIMONTHLY"}
+                  >
+                    BIMONTHLY
+                  </option>
+                  <option
+                    value={"SEMIANNUAL"}
+                    selected={planData?.plan === "SEMIANNUAL"}
+                  >
+                    SEMIANNUAL
+                  </option>
                 </select>
               </div>
 
@@ -119,14 +168,14 @@ function AddcreditHistoryLog() {
               </div>
               <div className="col">
                 <button
-                  onClick={creditAddHandler}
+                  onClick={submitHandler}
                   type="button"
                   className="btn btn-primary mt-4"
                 >
-                  Add
+                  Update
                 </button>
                 <button
-                  onClick={() => history.push(`/employee/users/update/${id}`)}
+                  onClick={() => history.push(`/employee/users/plans/${id}`)}
                   style={{
                     marginLeft: "20px",
                   }}
@@ -172,4 +221,4 @@ function AddcreditHistoryLog() {
   );
 }
 
-export default AddcreditHistoryLog;
+export default EditPlan;

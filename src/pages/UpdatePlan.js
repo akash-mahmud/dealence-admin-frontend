@@ -47,12 +47,11 @@ function UpdatePlan() {
       country,
       contracts,
     });
-
   };
   useEffect(() => {
-getUser();
-  }, [])
-  
+    getUser();
+  }, []);
+
   useEffect(() => {
     const data = localStorage.getItem("use");
 
@@ -105,7 +104,7 @@ getUser();
                   onChange={(e) => setcontract(e.target.value)}
                   className="form-control"
                 >
-                  <option  value={undefined}>Select contract</option>
+                  <option value={undefined}>Select contract</option>
                   {users?.contracts?.split(",")?.map((contract) => (
                     <option value={contract}>{contract}</option>
                   ))}
