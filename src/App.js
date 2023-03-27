@@ -73,10 +73,7 @@ function App() {
         >
           <AvailableCredits />
         </Route>
-        <Route
-          exact={true}
-          path="/employee/user/addavailablecredit/:id/:contract"
-        >
+        <Route exact={true} path="/employee/user/addavailablecredit/:id">
           <AddAvailableCredit />
         </Route>
         <Route

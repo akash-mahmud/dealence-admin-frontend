@@ -46,7 +46,7 @@ function AvailableCredits() {
     const params = getRequestParams(page, pageSize);
 
     userServices
-      .getAllAvailableCredits(params, id, contract)
+      .getAllAvailableCredits(params, id)
       .then((response) => {
         const { increment, totalPages } = response.data;
 
