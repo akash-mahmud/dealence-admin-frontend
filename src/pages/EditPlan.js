@@ -31,6 +31,10 @@ function EditPlan() {
       }
     );
     setPlanData(data);
+    setamount(data?.principal)
+    setcontract(data?.contract);
+    setplan(data?.plan);
+    setStartDate(new Date(data?.startDate));
   };
   const getUser = async () => {
     const { data } = await axios.get(`/api/users/verified/${id}`, {
