@@ -109,7 +109,7 @@ function TotalPaids() {
               {totalPaids &&
                 totalPaids.map((totalPaid, index) => (
                   <tr key={index}>
-                    <td>{`${new Date(totalPaid.createdAt).toDateString()}`}</td>
+                    <td>{`${new Date(totalPaid?.date).toDateString()}`}</td>
                     {/* <td>{totalPaid.contract}</td> */}
                     <td>{totalPaid.totalPaid}</td>
 
