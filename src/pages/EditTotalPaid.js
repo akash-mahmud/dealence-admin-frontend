@@ -56,6 +56,7 @@ function EditTotalPaid() {
       },
     });
     setTotalPaidData(data);
+    setTotalPaid(data?.totalPaid);
   };
 
   useEffect(() => {

@@ -17,17 +17,17 @@ function EditAvailableCredit() {
   const [err, seterr] = useState(false);
   const [message, setmessage] = useState("");
   const [startDate, setStartDate] = useState(new Date());
-  const [balance, setBalance] = useState(0.0);
-  const { id, contract: planContract } = useParams();
-  const [contract, setcontract] = useState(planContract);
+  const [credit, setCredit] = useState();
+  const [creditData, setCreditData] = useState();
+  const { id, creditId } = useParams();
+  const [contract, setcontract] = useState();
   const updateHandler = async (e) => {
     e.preventDefault();
     const { data } = await axios.post(
-      `/api/user/editavailablecredit/${id}`,
+      `/api/user/editavailablecredit/${creditId}`,
       {
         startDate,
-        balance,
-        contract: "#" + contract,
+        credit,
       },
       {
         headers: {
@@ -37,46 +37,26 @@ function EditAvailableCredit() {
     );
 
     if (data === "success") {
-      history.push(`/employee/user/balancelogs/${id}`);
+      history.push(`/employee/user/availablecredits/${id}`);
     } else {
       seterr(true);
       setmessage(data);
     }
   };
-  const [users, setUsers] = useState({});
-  const getUser = async () => {
-    const { data } = await axios.get(`/api/users/verified/${id}`, {
+  const getSingleAvailableCredit = async () => {
+    const url = `/api/users/verified/availablecredit/${creditId}`;
+
+    const { data } = await axios.get(url, {
       headers: {
         authorization: "Bearer " + JSON.parse(AcessToken).token,
       },
     });
-    const {
-      first_name,
-      last_name,
-      email,
-      phone_number,
-      address,
-      city,
-      state,
-      zip,
-      country,
-      contracts,
-    } = data[0];
-    setUsers({
-      first_name,
-      last_name,
-      email,
-      phone_number,
-      address,
-      city,
-      state,
-      zip,
-      country,
-      contracts,
-    });
+    console.log(data?.credit);
+    setCreditData(data);
+    setCredit(data?.credit);
   };
   useEffect(() => {
-    getUser();
+    getSingleAvailableCredit();
   }, []);
   return (
     <>
@@ -89,10 +69,11 @@ function EditAvailableCredit() {
                 <input
                   type="number"
                   className="form-control"
-                  onChange={(e) => setBalance(e.target.value)}
+                  defaultValue={credit}
+                  onChange={(e) => setCredit(e.target.value)}
                 />
               </div>
-              <div className="col">
+              {/* <div className="col">
                 <label>Select Contract</label>
                 <select
                   onChange={(e) => setcontract(e.target.value)}
@@ -109,7 +90,7 @@ function EditAvailableCredit() {
                     </option>
                   ))}
                 </select>
-              </div>
+              </div> */}
               <div className="col">
                 <label>Select date</label>
                 <DatePicker
@@ -129,7 +110,9 @@ function EditAvailableCredit() {
                   Update
                 </button>
                 <button
-                  onClick={() => history.push(`/employee/users/update/${id}`)}
+                  onClick={() =>
+                    history.push(`/employee/user/availablecredits/${id}`)
+                  }
                   style={{
                     marginLeft: "20px",
                   }}
