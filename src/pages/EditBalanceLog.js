@@ -57,6 +57,7 @@ function EditBalanceLog() {
     });
     setBalanceData(data);
     setBalance(data?.balance);
+        setStartDate(new Date(data?.date));
   };
   useEffect(() => {
     getSingleBalancePlan();

@@ -98,7 +98,7 @@ function AvailableCredits() {
           <table className="table table-hover mt-4">
             <thead>
               <tr>
-                <th scope="col">Started At</th>
+                {/* <th scope="col">Started At</th> */}
                 <th scope="col">Credit</th>
                 <th scope="col">Actions</th>
               </tr>
@@ -107,7 +107,7 @@ function AvailableCredits() {
               {credits &&
                 credits.map((credit, index) => (
                   <tr key={index}>
-                    <td>{`${new Date(credit.createdAt).toDateString()}`}</td>
+                    {/* <td>{`${new Date(credit.createdAt).toDateString()}`}</td> */}
                     <td>{credit.credit}</td>
                     <td>
                       <button

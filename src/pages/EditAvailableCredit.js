@@ -27,6 +27,7 @@ function EditAvailableCredit() {
       `/api/user/editavailablecredit/${creditId}`,
       {
         startDate,
+        contract,
         credit,
       },
       {
@@ -54,6 +55,8 @@ function EditAvailableCredit() {
     console.log(data?.credit);
     setCreditData(data);
     setCredit(data?.credit);
+    setcontract(data?.contract);
+    setStartDate(data?.startDate);
   };
   useEffect(() => {
     getSingleAvailableCredit();
@@ -91,7 +94,7 @@ function EditAvailableCredit() {
                   ))}
                 </select>
               </div> */}
-              <div className="col">
+              {/* <div className="col">
                 <label>Select date</label>
                 <DatePicker
                   className=" form-control"
@@ -100,7 +103,7 @@ function EditAvailableCredit() {
                     setStartDate(date);
                   }}
                 />
-              </div>
+              </div> */}
               <div className="col">
                 <button
                   onClick={updateHandler}
