@@ -102,7 +102,7 @@ function BalanceLogs() {
               {plans &&
                 plans.map((balance, index) => (
                   <tr key={index}>
-                    <td>{`${new Date(balance.createdAt).toDateString()}`}</td>
+                    <td>{`${new Date(balance?.date).toDateString()}`}</td>
                     <td>{balance.balance}</td>
                     <td>
                       <button
