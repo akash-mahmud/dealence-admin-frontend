@@ -7,9 +7,9 @@ import Alert from "@material-ui/lab/Alert";
 function EditBalanceLog() {
   const history = useHistory();
   const AcessToken = localStorage.getItem("use");
-  const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
-  const contract = searchParams.get("contract");
+  // const location = useLocation();
+  // const searchParams = new URLSearchParams(location.search);
+  // const contract = searchParams.get("contract");
 
   useEffect(() => {
     const data = localStorage.getItem("use");
@@ -49,14 +49,15 @@ function EditBalanceLog() {
   };
   const getSingleBalancePlan = async () => {
     const url = `/api/users/verified/planbalance/${balanceId}`;
-    console.log(url);
+
     const { data } = await axios.get(url, {
       headers: {
         authorization: "Bearer " + JSON.parse(AcessToken).token,
       },
     });
-    console.log(data);
     setBalanceData(data);
+    setBalance(data?.balance);
+        setStartDate(new Date(data?.date));
   };
   useEffect(() => {
     getSingleBalancePlan();

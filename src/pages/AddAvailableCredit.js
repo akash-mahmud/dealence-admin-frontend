@@ -106,7 +106,7 @@ function AddcreditHistoryLog() {
                   ))}
                 </select>
               </div>
-
+{/* 
               <div className="col">
                 <label>Select date</label>
                 <DatePicker
@@ -116,7 +116,7 @@ function AddcreditHistoryLog() {
                     setStartDate(date);
                   }}
                 />
-              </div>
+              </div> */}
               <div className="col">
                 <button
                   onClick={creditAddHandler}

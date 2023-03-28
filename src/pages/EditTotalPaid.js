@@ -56,6 +56,9 @@ function EditTotalPaid() {
       },
     });
     setTotalPaidData(data);
+    setTotalPaid(data?.totalPaid);
+    setStartDate(new Date(data?.date));
+    setcontract(data?.contract);
   };
 
   useEffect(() => {
