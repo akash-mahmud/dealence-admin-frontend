@@ -99,6 +99,7 @@ function AvailableCredits() {
             <thead>
               <tr>
                 <th scope="col">Started At</th>
+                <th scope="col">Contract</th>
                 <th scope="col">Credit</th>
                 <th scope="col">Actions</th>
               </tr>
@@ -108,6 +109,7 @@ function AvailableCredits() {
                 credits.map((credit, index) => (
                   <tr key={index}>
                     <td>{`${new Date(credit.createdAt).toDateString()}`}</td>
+                    <td>{credit.contract}</td>
                     <td>{credit.credit}</td>
                     <td>
                       <button
