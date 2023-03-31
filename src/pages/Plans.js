@@ -91,6 +91,7 @@ function Plans() {
               <tr>
                 <th scope="col">Started At</th>
                 <th scope="col">Plan Type</th>
+                <th scope="col">Contract</th>
                 <th scope="col">Amount</th>
                 <th scope="col">Actions</th>
               </tr>
@@ -101,6 +102,7 @@ function Plans() {
                   <tr key={index}>
                     <td>{`${new Date(plan.createdAt).toDateString()}`}</td>
                     <td>{plan.plan}</td>
+                    <td>{plan.contract}</td>
                     <td>{plan.principal}</td>
 
                     <td>

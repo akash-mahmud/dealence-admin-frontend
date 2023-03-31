@@ -100,7 +100,7 @@ function TotalPaids() {
             <thead>
               <tr>
                 <th scope="col">Started At</th>
-                {/* <th scope="col">Contract</th> */}
+                <th scope="col">Contract</th>
                 <th scope="col">Total Paid</th>
                 <th scope="col">Actions</th>
               </tr>
@@ -110,7 +110,7 @@ function TotalPaids() {
                 totalPaids.map((totalPaid, index) => (
                   <tr key={index}>
                     <td>{`${new Date(totalPaid?.date).toDateString()}`}</td>
-                    {/* <td>{totalPaid.contract}</td> */}
+                    <td>{totalPaid.contract}</td>
                     <td>{totalPaid.totalPaid}</td>
 
                     <td>

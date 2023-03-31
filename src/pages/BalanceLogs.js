@@ -94,6 +94,7 @@ function BalanceLogs() {
             <thead>
               <tr>
                 <th scope="col">Started At</th>
+                <th scope="col">Contract</th>
                 <th scope="col">Amount</th>
                 <th scope="col">Actions</th>
               </tr>
@@ -103,6 +104,7 @@ function BalanceLogs() {
                 plans.map((balance, index) => (
                   <tr key={index}>
                     <td>{`${new Date(balance?.date).toDateString()}`}</td>
+                    <td>{balance.contract}</td>
                     <td>{balance.balance}</td>
                     <td>
                       <button
