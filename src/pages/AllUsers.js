@@ -7,6 +7,7 @@ function AllUsers() {
   const history = useHistory();
   const AcessToken = localStorage.getItem("use");
   const [users, setUsers] = useState([]);
+  // console.log(users);
   const getUsers = async () => {
     const { data } = await axios.get("/api/users/verified");
     setUsers(data);
@@ -61,7 +62,7 @@ function AllUsers() {
       history.push("/employee/login");
     }
   }, [history]);
-  const retrieveTutorials = () => {
+  const retriveUsers = () => {
     const params = getRequestParams(page, pageSize);
 
     userServices
@@ -79,7 +80,45 @@ function AllUsers() {
       });
   };
 
-  useEffect(retrieveTutorials, [page, pageSize]);
+  useEffect(retriveUsers, [page, pageSize]);
+
+  const restrictUser = async (id) => {
+    const { data } = await axios.post(
+      `/api/user/update/details/${id}`,
+      {
+       status:'banned'
+      },
+      {
+        headers: {
+          authorization: "Bearer " + JSON.parse(AcessToken).token,
+        },
+      }
+    );
+    retriveUsers()
+  }
+  const unRestrictUser = async (id) => {
+    const { data } = await axios.post(
+      `/api/user/update/details/${id}`,
+      {
+        status:'active'
+      },
+      {
+        headers: {
+          authorization: "Bearer " + JSON.parse(AcessToken).token,
+        },
+      }
+    );
+    retriveUsers()
+  }
+  const deleteUser = async(id) => {
+await axios.post('/api/users/delete' , {id},  {
+  headers: {
+    authorization: "Bearer " + JSON.parse(AcessToken).token,
+  },
+})
+    retriveUsers()
+
+  }
   return (
     <>
       <div className="container">
@@ -133,6 +172,7 @@ function AllUsers() {
                 <th scope="col">state</th>
                 <th scope="col">zip</th>
                 <th scope="col">country</th>
+                <th scope="col">status</th>
                 <th scope="col">Action</th>
               </tr>
             </thead>
@@ -149,6 +189,7 @@ function AllUsers() {
                       <td>{currentUser.state}</td>
                       <td>{currentUser.zip}</td>
                       <td>{currentUser.country}</td>
+                      <td>{currentUser.status}</td>
                       <td>
                         <button
                           type="button"
@@ -163,6 +204,32 @@ function AllUsers() {
                           }
                         >
                           Update
+                        </button>
+                        <button
+                          type="button"
+                          className="btn  btn-warning"
+                          style={{
+                            color: "#fff",
+                            marginLeft:5
+                          }}
+                          onClick={currentUser?.status==='active'?()=> restrictUser(currentUser?.id) : () => unRestrictUser(currentUser.id)
+                          }
+                        >
+                          {currentUser?.status==='active'? 'Restrict' : 'Activate'}
+                          
+                        </button>
+                        <button
+                          type="button"
+                          className="btn  btn-danger"
+                          style={{
+                            color: "#fff",
+                            marginLeft:5
+                          }}
+                          onClick={() => deleteUser(currentUser?.id)}
+                          
+                        >
+                          Delete
+                          
                         </button>
                       </td>
                     </tr>

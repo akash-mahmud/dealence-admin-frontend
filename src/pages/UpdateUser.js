@@ -36,6 +36,7 @@ function UpdateUser() {
       zip,
       country,
       contracts,
+      status
     } = data[0];
     setUsers({
       first_name,
@@ -48,6 +49,7 @@ function UpdateUser() {
       zip,
       country,
       contracts,
+      status
     });
   };
   const [data, setdata] = useState();
